@@ -69,7 +69,7 @@ class Diagnostics(commands.Cog):
     def generate_latency_graph(self):
         scale_factor = 2
         width, height = 600 * scale_factor, 300 * scale_factor
-        pad_top, pad_bot, pad_left, pad_right = 100, 80, 100, 40
+        pad_top, pad_bot, pad_left, pad_right = 175, 80, 100, 40
 
         img = Image.new("RGBA", (width, height), color=(30, 31, 34, 255))
         draw = ImageDraw.Draw(img)
