@@ -1,6 +1,6 @@
 # Dopamine Framework
 
-Dopamine Framework is the best framework for `discord.py` bots. Dopamine Framework allows you to initialyze a production-ready Discord bot in just 5 lines of code. It is designed to streamline the development of scalable Discord applications by automating the process of registering commands, diagnosing the bot, and various other utilities such as a paginator helper and "Private View" helpers which let only the user who initiated the interaction to interact with the components like buttons.
+Dopamine Framework is the best framework for `discord.py` bots. Dopamine Framework allows you to initialize a production-ready Discord bot in just 4 lines of code. It is designed to streamline the development of scalable Discord applications by automating the process of registering commands, diagnosing the bot, and various other utilities such as a paginator helper and "Private View" helpers which let only the user who initiated the interaction to interact with the components like buttons.
 
 Made by smite-codes.
 
@@ -53,8 +53,7 @@ To initialize a bot using the Dopamine Framework, follow the following example:
 import discord
 from dopamine_framework import Bot
 
-intents = discord.Intents.default()
-bot = Bot(command_prefix="?", cogs_path="modules", logging_path="logging.db", default_diagnostics=True, intents=intents) # If no cogs folder is defined, it will default to "cogs". If no logging path, logging will be disabled.
+bot = Bot(command_prefix="?", cogs_path="modules", logging_path="logging.db", default_diagnostics=True, intents=discord.Intents.default()) # If no cogs folder is defined, it will default to "cogs". If no logging path, logging will be disabled.
 
 bot.run("YOUR_BOT_TOKEN_HERE")
 ```
@@ -85,8 +84,7 @@ The LoggingManager is an asynchronous backend designed to facilitate per-guild D
 import discord
 from dopamine_framework import Bot
 
-intents = discord.Intents.default()
-bot = Bot(command_prefix="?", cogs_path="modules", logging_path="logging.db", default_diagnostics=True, intents=intents) # Define logging path to enable logging. If no logging path, logging will be disabled.
+bot = Bot(command_prefix="?", cogs_path="modules", logging_path="logging.db", default_diagnostics=True, intents=discord.Intents.default()) # Define logging path to enable logging. If no logging path, logging will be disabled.
 
 bot.run("YOUR_BOT_TOKEN_HERE")
 ```
