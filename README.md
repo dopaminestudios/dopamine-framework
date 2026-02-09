@@ -32,7 +32,7 @@ The built-in `Diagnostics` "cog" (module) provides real-time monitoring of the b
 
 ### 3. In-Discord Owner Dashboard
 
-An easy to use and feature rich dashboard, right within Discord, accessede using `/od`. This allows bot owner(s) to manage, diagnose the bot right within Discord itself. This dashboard allows the bot to run idefinitely without restarts:
+Never have to need terminal access/SSH using this simple to use and feature-rich dashboard for bot owners, accessed using `/od`. This allows bot owner(s) to manage, diagnose the bot right within Discord itself. This dashboard allows the bot to run idefinitely without restarts:
 
 * **Cog Management:** Dynamic loading, unloading, and reloading of cogs.
 * **Power State:** Remote shutdown and process-level restarts.
