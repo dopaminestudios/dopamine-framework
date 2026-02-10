@@ -1,6 +1,6 @@
 # Dopamine Framework
 
-Dopamine Framework is the best framework for `discord.py` bots. Dopamine Framework allows you to initialize a production-ready Discord bot in just 4 lines of code. It is designed to streamline the development of scalable Discord applications by automating the process of registering commands, diagnosing the bot, and various other utilities such as a paginator helper and "Private View" helpers which let only the user who initiated the interaction to interact with the components like buttons.
+Dopamine Framework is a framework for discord.py which allows you to initialize a production-ready Discord bot in just 4 lines of code. It is designed to streamline the development of scalable Discord applications by automating the process of registering commands, diagnosing the bot, and various other utilities such as a paginator helper and "Private View" helpers which let only the user who initiated the interaction to interact with the components like buttons.
 
 Made by likerofturtles.
 
@@ -34,7 +34,7 @@ The built-in `Diagnostics` "cog" (module) provides real-time monitoring of the b
 
 ### 3. In-Discord Owner Dashboard
 
-Never have to need terminal access/SSH using this simple to use and feature-rich dashboard for bot owners, accessed using `/od`. This allows bot owner(s) to manage, diagnose the bot right within Discord itself. This dashboard allows the bot to run idefinitely without restarts:
+No need for terminal access/SSH. This simple to use and feature-rich dashboard for bot owners allows you to unload/reload cogs on the fly, restart the bot, or check logs, accessed using `/od`. This allows bot owner(s) to manage, diagnose the bot right within Discord itself. This dashboard allows the bot to run idefinitely without restarts:
 
 * **Cog Management:** Dynamic loading, unloading, and reloading of cogs.
 * **Power State:** Remote shutdown and process-level restarts.
@@ -49,20 +49,22 @@ Never have to need terminal access/SSH using this simple to use and feature-rich
 
 ### Comparison (with Sapphire Framework and bare-bones discord.py)
 
-| Feature                           | Dopamine Framework   | Sapphire (js/ts)            | discord.py |
-|-----------------------------------|----------------------|-----------------------------|------------|
-| **Easy Setup**                    | **✅ (only 4 lines)** | **❌** (Lots of boilerplate) | **❌**      |
-| **Smart Commands Sync**           | **✅ (Built-in)**     | **✅** (Through plugins)     | **❌**      |
-| **In-Discord Dashboard**          | **✅ (Built-in)**     | **❌**                       | **❌**      |
-| **Latency Graphs**                | **✅ (Built-in)**     | **❌**                       | **❌**      |
-| **Scalability**                   | **✅ (High)**         | **✅ (Highest)**             | **✅**      |
-| **Efficient & Fast Development**  | **✅ (Highest)**      | **❌**                       | **❌**      |
-| **Strict TypeScript Rules**       | **❌**                | **✅**                       | **❌**      |
-| **Resource Monitoring**           | **✅ (Built-in)**     | **❌**                       | **❌**      |
-| **Is it JS, tho?**                | **❌**                | **✅**                       | **❌**      |
-| **0.02s faster execution time**   | **❌**                | **✅**                       | **❌**      |
-| **3 MB less memory usage**        | **❌**                | **✅**                       | **❌**      |
-| **Gives you that Dopamine rush?** | **✅ (Built-in)**     | **❌**                       | **❌**      |
+| Feature                           | Dopamine Framework       | Sapphire (js/ts)           | discord.py                    |
+|-----------------------------------|--------------------------|----------------------------|-------------------------------|
+| **Easy Setup**                    | **✅ (minimal boilerplate)** | **❌** (Lots of boilerplate) | **❌**                         |
+| **Smart Commands Sync**           | **✅ (Built-in)**         | **✅** (Through plugins)    | **❌** (not included/standard) |
+| **In-Discord Dashboard**          | **✅ (Built-in)**         | **❌**                      | **❌**                         |
+| **Latency Graphs**                | **✅ (Built-in)**         | **❌**                      | **❌**                         |
+| **Scalability***                  | **✅**               | **✅**       | **✅**                         |
+| **Fast Iteration**                | **✅**         | **❌**                      | **❌**                         |
+| **Strict TypeScript Rules**       | **❌**                    | **✅**                      | **❌**                         |
+| **Built-in Resource Monitoring**  | **✅**         | **❌**                      | **❌**                         |
+| **Is it JS, tho?**                | **❌**                    | **✅**                      | **❌**                         |
+| **Wins Imaginary Benchmarks**     | **❌**                    | **✅**                      | **❌**                         |
+| **Gives you that Dopamine rush?** | **✅ (Built-in)**         | **❌**                      | **❌**                         |
+
+<sup>*Scalability refers to ability to run without problems when the bot is in tens of thousands of servers or more. While it's a common myth that "Python is bloated", that's not true in the context of Discord bots. The real bottleneck in popular Discord bots always comes down to network, not code execution time or memory usage.</sup>
+
 
 ---
 
