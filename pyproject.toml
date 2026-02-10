@@ -4,8 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dopamine-framework"
-version = "1.0.0"
-description = "Best discord.py framework. Automatically check and sync commands, easy-to-use in-Discord dashboard, logging backend, and more. Made by smite-codes."
+version = "1.0.1"
+author = "likerofturtles"
+description = "Initialize a production-ready Discord.py bot in just 4 lines of code. Smart and automated command syncing, easy-to-use in-Discord dashboard, logging backend, and more. Made by likerofturtles"
 readme = "README.md"
 dependencies = [
     "discord.py>=2.0.0",
