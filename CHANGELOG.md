@@ -32,7 +32,7 @@
 * Updated code snippets in readme to use the new "dopamineframework" name in imports. ([8503cae](https://github.com/likerofturtles/dopamine-framework/commit/8503cae20cafa4ec1c54e37f22bca889d450660f))
 * updated readme. ([cc28971](https://github.com/likerofturtles/dopamine-framework/commit/cc289715b118731a0721443456d7cdd7ea5626fc))
 
-## [1.1.1](https://github.com/likerofturtles/dopamine-framework/compare/v1.1.0...v1.1.1) (2026-02-12)
+## [v1.1.1](https://github.com/likerofturtles/dopamine-framework/compare/v1.1.0...v1.1.1) (2026-02-12)
 
 
 ### Bug Fixes
