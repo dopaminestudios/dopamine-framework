@@ -1,3 +1,8 @@
+## [v1.2.1](https://github.com/likerofturtles/dopamine-framework/compare/vv1.2.0...vv1.2.1) (2026-02-12)
+### Bug Fixes
+
+* Fixed internal cog's version not updating on version bump. ([5683fe1](https://github.com/likerofturtles/dopamine-framework/commit/5683fe1203f7bacdcb3c9ff6677bad8d9174430f))
+
 ## [v1.2.0](https://github.com/likerofturtles/dopamine-framework/compare/vv1.1.1...vv1.2.0) (2026-02-12)
 ### Features
 
