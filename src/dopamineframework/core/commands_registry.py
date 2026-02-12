@@ -16,7 +16,11 @@ class CommandRegistry:
             "options": []
         }
 
-        if hasattr(command, 'parameters'):
+        if hasattr(command, 'commands'):
+            for sub_command in command.commands:
+                signature["options"].append(self._get_command_signature(sub_command))
+
+        elif hasattr(command, 'parameters'):
             for param in command.parameters:
                 signature["options"].append({
                     "name": param.name,
@@ -43,20 +47,30 @@ class CommandRegistry:
 
         remote_map = {}
         for c in remote_commands:
-            remote_map[c.name] = {
-                "name": c.name,
-                "description": c.description,
-                "options": sorted([
-                    {
-                        "name": opt.name,
-                        "description": opt.description,
-                        "type": int(opt.type.value),
-                        "required": opt.required
-                    } for opt in c.options
-                ], key=lambda x: x["name"]) if c.options else []
-            }
+            remote_map[c.name] = self._parse_remote_signature(c)
 
         return local_map == remote_map
+
+    def _parse_remote_signature(self, command):
+        options = []
+        raw_options = getattr(command, 'options', [])
+
+        for opt in raw_options:
+            if opt.type.value in (1, 2):
+                options.append(self._parse_remote_signature(opt))
+            else:
+                options.append({
+                    "name": opt.name,
+                    "description": opt.description,
+                    "type": int(opt.type.value),
+                    "required": getattr(opt, 'required', False)
+                })
+
+        return {
+            "name": command.name,
+            "description": command.description,
+            "options": sorted(options, key=lambda x: x["name"])
+        }
 
     async def smart_sync(self, guild: discord.Guild = None):
         is_synced = await self.get_sync_status(guild)
