@@ -9,4 +9,4 @@ try:
 except Exception:
     BOLDFONT_PATH = "Bold.ttf"
 
-framework_version = "1.2.1"
+framework_version = "1.2.2"

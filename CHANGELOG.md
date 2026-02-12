@@ -1,3 +1,9 @@
+## [v1.2.2](https://github.com/likerofturtles/dopamine-framework/compare/vv1.2.1...vv1.2.2) (2026-02-12)
+### Bug Fixes
+
+* Added "v" prefix to internal cog framework version. ([a477468](https://github.com/likerofturtles/dopamine-framework/commit/a4774686798a0766ef37162d74235c29dc5c36dc))
+* Added "v" prefix to print and log statements in bot.py. ([ee8ad77](https://github.com/likerofturtles/dopamine-framework/commit/ee8ad7709871d52b7756b2079824763f7c71b257))
+
 ## [v1.2.1](https://github.com/likerofturtles/dopamine-framework/compare/vv1.2.0...vv1.2.1) (2026-02-12)
 ### Bug Fixes
 
