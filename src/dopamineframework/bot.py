@@ -96,7 +96,7 @@ class Bot(commands.Bot):
 
         banner = ("\n"
                   f"---------------------------------------------------\n"
-                  f"Powered by Dopamine Framework {framework_version}\n"
+                  f"Powered by Dopamine Framework v{framework_version}\n"
                   "\n"
                   f"Bot ready: {self.user} (ID: {self.user.id})\n"
                   f"Bot Owner identified: {owner_user_name}\n"
