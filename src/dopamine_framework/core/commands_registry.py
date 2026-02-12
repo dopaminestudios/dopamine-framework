@@ -10,7 +10,6 @@ class CommandRegistry:
         self.bot = bot
 
     def _get_command_signature(self, command):
-        """Creates a signature of a command including its options."""
         signature = {
             "name": command.name,
             "description": command.description,
@@ -65,17 +64,17 @@ class CommandRegistry:
         scope = f"Guild({guild.id})" if guild else "Global"
 
         if not is_synced:
-            logger.info(f"Detected changes. Syncing {scope} commands...")
+            logger.info(f"Dopamine Framework: Detected changes. Syncing {scope} commands...")
             await self.bot.tree.sync(guild=guild)
-            return f"{scope} commands synced successfully."
+            return f"Dopamine Framework: {scope} commands synced successfully."
         else:
             logger.info(f"No changes detected for {scope}. Skipping sync.")
-            return f"{scope} commands are already up to date."
+            return f"Dopamine Framework: {scope} commands are already up to date."
 
     async def force_sync(self, guild: discord.Guild = None):
         scope = f"Guild: {guild.name} ({guild.id})" if guild else "Global"
         try:
             await self.bot.tree.sync(guild=guild)
-            return f"Synced slash commands to: {scope}."
+            return f"Dopamine Framework: Synced slash commands to: {scope}."
         except discord.HTTPException as e:
-            return f"Rate limit or API error: {e}"
+            return f"Dopamine Framework: Rate limit or API error: {e}"
