@@ -67,7 +67,7 @@ class CommandRegistry:
         if not is_synced:
             logger.info(f"Detected changes. Syncing {scope} commands...")
             await self.bot.tree.sync(guild=guild)
-            return f"✅ {scope} commands synced successfully."
+            return f"{scope} commands synced successfully."
         else:
             logger.info(f"No changes detected for {scope}. Skipping sync.")
             return f"{scope} commands are already up to date."
@@ -78,4 +78,4 @@ class CommandRegistry:
             await self.bot.tree.sync(guild=guild)
             return f"Synced slash commands to: {scope}."
         except discord.HTTPException as e:
-            return f"❌ Rate limit or API error: {e}"
+            return f"Rate limit or API error: {e}"
