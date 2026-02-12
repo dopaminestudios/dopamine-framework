@@ -249,7 +249,7 @@ class Diagnostics(commands.Cog):
         embed = discord.Embed(
             title="Latency Info",
             description=(
-                f"> Powered by Dopamine Framework `{framework_version}`\n\n"
+                f"> Powered by Dopamine Framework `v{framework_version}`\n\n"
                 f"> Connected to Discord Gateway: `{gateway_node}`\n"
                 f"> Bot Host Location: `{location}`\n\n"
                 f"> API Latency: `{connection_latency}ms`\n"
