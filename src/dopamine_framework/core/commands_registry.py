@@ -9,6 +9,26 @@ class CommandRegistry:
     def __init__(self, bot):
         self.bot = bot
 
+    def _get_command_signature(self, command):
+        """Creates a signature of a command including its options."""
+        signature = {
+            "name": command.name,
+            "description": command.description,
+            "options": []
+        }
+
+        if hasattr(command, 'parameters'):
+            for param in command.parameters:
+                signature["options"].append({
+                    "name": param.name,
+                    "description": param.description,
+                    "type": int(param.type.value),
+                    "required": param.required
+                })
+
+        signature["options"] = sorted(signature["options"], key=lambda x: x["name"])
+        return signature
+
     async def get_sync_status(self, guild: discord.Guild = None):
         local_commands = self.bot.tree.get_commands(guild=guild)
         try:
@@ -20,8 +40,22 @@ class CommandRegistry:
         if len(local_commands) != len(remote_commands):
             return False
 
-        local_map = {c.name: c.description for c in local_commands}
-        remote_map = {c.name: c.description for c in remote_commands}
+        local_map = {c.name: self._get_command_signature(c) for c in local_commands}
+
+        remote_map = {}
+        for c in remote_commands:
+            remote_map[c.name] = {
+                "name": c.name,
+                "description": c.description,
+                "options": sorted([
+                    {
+                        "name": opt.name,
+                        "description": opt.description,
+                        "type": int(opt.type.value),
+                        "required": opt.required
+                    } for opt in c.options
+                ], key=lambda x: x["name"]) if c.options else []
+            }
 
         return local_map == remote_map
 
