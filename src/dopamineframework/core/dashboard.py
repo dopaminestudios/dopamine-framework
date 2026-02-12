@@ -4,8 +4,8 @@ import discord
 import signal
 import asyncio
 from typing import TYPE_CHECKING
-from src.dopamineframework.bot import Bot
-from src.dopamineframework.core.commands_registry import CommandRegistry
+from ..bot import Bot
+from ..core.commands_registry import CommandRegistry
 signal_handler = Bot.signal_handler
 restart_bot = Bot.restart_bot
 
