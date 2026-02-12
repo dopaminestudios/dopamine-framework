@@ -1,3 +1,20 @@
+## [v1.3.0](https://github.com/likerofturtles/dopamine-framework/compare/vv1.2.4...vv1.3.0) (2026-02-12)
+### Features & Minor Updates and Changes
+
+* Added ephemeral option to /od command that shows the owners dashboard. The dashboard is now sent as non-ephemeral by default, but you can choose to make it ephemeral using the option. ([defa142](https://github.com/likerofturtles/dopamine-framework/commit/defa142f3f6eef6c7d6853b21ff998317ca96e54))
+
+### Bug Fixes
+
+* Added relative import to fix this error that occurs when attempting to load internal cog: ERROR: Failed to start the bot: Extension 'dopamineframework.ext.diagnostics' raised an error: ModuleNotFoundError: No module named 'src' ([0f29ed1](https://github.com/likerofturtles/dopamine-framework/commit/0f29ed13332724e4a6f1ebfa968a6ae2a072030e))
+
+### Styling, UI, Code Cleanup, and Linting Fixes
+
+* Added "Dopamine Framework: " prefix to all strings and to owner dashboard header. Because, branding is always nice! ([83a6e29](https://github.com/likerofturtles/dopamine-framework/commit/83a6e299a082fa46d6b687cb50f11880fd3cda5d))
+
+### Documentation Changes
+
+* Updated README. ([c2b080b](https://github.com/likerofturtles/dopamine-framework/commit/c2b080b46e1aa8188962adf813fe9df440a59416))
+
 ## [v1.2.4](https://github.com/likerofturtles/dopamine-framework/compare/vv1.2.3...vv1.2.4) (2026-02-12)
 ### Bug Fixes
 
