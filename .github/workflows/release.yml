@@ -11,19 +11,21 @@ jobs:
       contents: write
       issues: write
       pull-requests: write
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-- name: Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
 
-      - name: Install Semantic Release
-        run: npm install semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/exec
+      - name: Install Dependencies
+        run: |
+          npm install semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/exec @semantic-release/github
 
       - name: Release
         env:
