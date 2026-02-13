@@ -1,3 +1,8 @@
+## [v1.4.0](https://github.com/likerofturtles/dopamine-framework/compare/vv1.3.3...vv1.4.0) (2026-02-13)
+### Features & Minor Updates and Changes
+
+* Added ability to set status and activity when calling Bot. ([456eafa](https://github.com/likerofturtles/dopamine-framework/commit/456eafa29d464fc987bacddaed77022e9b3c951c))
+
 ## [v1.3.3](https://github.com/likerofturtles/dopamine-framework/compare/vv1.3.2...vv1.3.3) (2026-02-13)
 ### Bug Fixes
 
