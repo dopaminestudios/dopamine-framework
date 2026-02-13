@@ -49,21 +49,21 @@ No need for terminal access/SSH. This simple to use and feature-rich dashboard f
 
 ### Comparison (with Sapphire Framework and bare-bones discord.py)
 
-| Feature                                  | Dopamine Framework          | Sapphire (js/ts)            | discord.py                    |
-|------------------------------------------|-----------------------------|-----------------------------|-------------------------------|
-| **Easy Setup**                           | **✅ (minimal boilerplate)** | **❌** (Lots of boilerplate) | **❌**                         |
-| **No tantrums over different structure** | **✅**                       | **❌**                       | **✅**                         |
-| **Python's ease of use**                 | **✅**                       | **❌**                       | **✅**                         |
-| **Smart Commands Sync**                  | **✅ (Built-in)**            | **✅** (Through plugins)     | **❌** (not included/standard) |
-| **In-Discord Dashboard**                 | **✅ (Built-in)**            | **❌**                       | **❌**                         |
-| **Latency Graphs**                       | **✅ (Built-in)**            | **❌**                       | **❌**                         |
-| **Scalability***                         | **✅**                       | **✅**                       | **✅**                         |
-| **Fast Iteration**                       | **✅**                       | **❌**                       | **❌**                         |
-| **Strict TypeScript Rules**              | **❌**                       | **✅**                       | **❌**                         |
-| **Built-in Resource Monitoring**         | **✅**                       | **❌**                       | **❌**                         |
-| **Is it JS, tho?**                       | **❌**                       | **✅**                       | **❌**                         |
-| **Wins Imaginary Benchmarks**            | **❌**                       | **✅**                       | **❌**                         |
-| **Gives you that Dopamine rush?**        | **✅ (Built-in)**            | **❌**                       | **❌**                         |
+| Feature                                   |      Dopamine Framework       |      Sapphire (js/ts)       |           discord.py            |
+|:------------------------------------------|:-----------------------------:|:---------------------------:|:-------------------------------:|
+| **Easy Setup**                            |  **✅ (minimal boilerplate)**  | **❌** (Lots of boilerplate) |              **❌**              |
+| **No tantrums over different structure**  |             **✅**             |            **❌**            |              **✅**              |
+| **Python's ease of use**                  |             **✅**             |            **❌**            |              **✅**              |
+| **Smart Commands Sync**                   |       **✅ (Built-in)**        |   **✅** (Through plugins)   |  **❌** (not included/standard)  |
+| **In-Discord Dashboard**                  |       **✅ (Built-in)**        |            **❌**            |              **❌**              |
+| **Latency Graphs**                        |       **✅ (Built-in)**        |            **❌**            |              **❌**              |
+| **Scalability***                          |             **✅**             |            **✅**            |              **✅**              |
+| **Fast Iteration**                        |             **✅**             |            **❌**            |              **❌**              |
+| **Strict TypeScript Rules**               |             **❌**             |            **✅**            |              **❌**              |
+| **Built-in Resource Monitoring**          |             **✅**             |            **❌**            |              **❌**              |
+| **Is it JS, tho?**                        |             **❌**             |            **✅**            |              **❌**              |
+| **Wins Imaginary Benchmarks**             |             **❌**             |            **✅**            |              **❌**              |
+| **Gives you that Dopamine rush?**         |       **✅ (Built-in)**        |            **❌**            |              **❌**              |
 
 <sup>*Scalability refers to ability to run without problems when the bot is in tens of thousands of servers or more. While it's a common myth that "Python is bloated", that's not true in the context of Discord bots. The real bottleneck in popular Discord bots always comes down to network, not code execution time or memory usage.</sup>
 
