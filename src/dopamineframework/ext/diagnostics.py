@@ -8,7 +8,6 @@ import os
 import io
 from PIL import Image, ImageDraw, ImageFont
 from collections import deque
-from ..core.dashboard import OwnerDashboard
 from .path import framework_version, BOLDFONT_PATH
 import geocoder
 
@@ -281,13 +280,5 @@ class Diagnostics(commands.Cog):
         else:
             await interaction.edit_original_response(content="Not enough data yet! The bot or cog was restarted very recently. Please wait a few minutes.")
 
-    @app_commands.command(name="od", description=".")
-    @app_commands.describe(ephemeral="True makes the dashboard to only be visible to you.")
-    async def zc(self, interaction: discord.Interaction, ephemeral: bool = False):
-        if not await self.bot.is_owner(interaction.user):
-            await interaction.response.send_message("🤫", ephemeral=True)
-            return
-        view = OwnerDashboard(self.bot, interaction.user)
-        await interaction.response.send_message(view=view, ephemeral=True if ephemeral else False)
 async def setup(bot):
     await bot.add_cog(Diagnostics(bot))
