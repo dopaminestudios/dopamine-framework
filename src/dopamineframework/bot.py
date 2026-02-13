@@ -16,7 +16,7 @@ logger = logging.getLogger("discord")
 
 
 class Bot(commands.Bot):
-    def __init__(self, cogs_path: str = "cogs", log_path: str = None, default_diagnostics: bool = True, *args, **kwargs):
+    def __init__(self, cogs_path: str = "cogs", log_path: str = None, default_diagnostics: bool = True, status: discord.Status = None, activity: discord.Activity = None, *args, **kwargs):
         command_prefix = kwargs.pop("command_prefix", "!")
 
         super().__init__(
@@ -31,6 +31,8 @@ class Bot(commands.Bot):
         self.log_path = log_path
         self.process_start_time = time.time()
         self.default_diagnostics = default_diagnostics
+        self.status=status
+        self.activity=activity
         self.registry = CommandRegistry(self)
         self.start_time = None
 
@@ -104,6 +106,22 @@ class Bot(commands.Bot):
                   "")
 
         print(banner)
+
+        if self.activity and self.status:
+            try:
+                await self.change_presence(activity=self.activity, status=self.status)
+            except Exception as e:
+                logger.critical(f"Dopamine Framework: ERROR: Failed to set activity or status: {e}")
+        elif self.activity:
+            try:
+                await self.change_presence(activity=self.activity)
+            except Exception as e:
+                logger.critical(f"Dopamine Framework: ERROR: Failed to set activity: {e}")
+        elif self.status:
+            try:
+                await self.change_presence(status=self.status)
+            except Exception as e:
+                logger.critical(f"Dopamine Framework: ERROR: Failed to set status: {e}")
 
 
         self.start_time = time.time()
