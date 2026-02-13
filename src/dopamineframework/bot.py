@@ -59,6 +59,7 @@ class Bot(commands.Bot):
             print(f"Dopamine Framework: WARNING: '{self.cogs_path}' directory not found.")
         if self.default_diagnostics:
             await self.load_extension("dopamineframework.ext.diagnostics")
+        await self.load_extension("dopamineframework.ext.pic")
         status = await self.registry.smart_sync()
         print(status)
 
