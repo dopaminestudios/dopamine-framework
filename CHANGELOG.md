@@ -1,3 +1,8 @@
+## [v1.4.12](https://github.com/likerofturtles/dopamine-framework/compare/vv1.4.11...vv1.4.12) (2026-02-14)
+### Bug Fixes
+
+* Fixed and added ability to handle message commands. ([67eff45](https://github.com/likerofturtles/dopamine-framework/commit/67eff4523c8248f069813779202f390df0831e83))
+
 ## [v1.4.11](https://github.com/likerofturtles/dopamine-framework/compare/vv1.4.10...vv1.4.11) (2026-02-14)
 ### Bug Fixes
 
