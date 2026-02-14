@@ -6,8 +6,6 @@ import asyncio
 from typing import TYPE_CHECKING
 from ..bot import Bot
 from ..core.commands_registry import CommandRegistry
-signal_handler = Bot.signal_handler
-restart_bot = Bot.restart_bot
 
 if TYPE_CHECKING:
     from discord.ext import commands
@@ -176,11 +174,11 @@ class OwnerDashboard(PrivateLayoutView):
 
     async def shutdown_callback(self, interaction: discord.Interaction):
         await interaction.response.send_message("Dopamine Framework: Shutting down...", ephemeral=True)
-        await signal_handler()
+        await self.bot.signal_handler()
 
     async def restart_callback(self, interaction: discord.Interaction):
         await interaction.response.send_message("Dopamine Framework: Restarting process...", ephemeral=True)
-        await restart_bot()
+        await self.bot.restart_bot()
 
     async def show_log_callback(self, interaction: discord.Interaction):
         log_path = os.path.join(os.getcwd(), "discord.log")
