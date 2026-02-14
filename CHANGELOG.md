@@ -1,3 +1,8 @@
+## [v1.4.9](https://github.com/likerofturtles/dopamine-framework/compare/vv1.4.8...vv1.4.9) (2026-02-14)
+### Bug Fixes
+
+* Added interaction defer for log button. ([d6a1fcf](https://github.com/likerofturtles/dopamine-framework/commit/d6a1fcf1e097571ec0768d9a63d8190130811145))
+
 ## [v1.4.8](https://github.com/likerofturtles/dopamine-framework/compare/vv1.4.7...vv1.4.8) (2026-02-14)
 ### Bug Fixes
 
