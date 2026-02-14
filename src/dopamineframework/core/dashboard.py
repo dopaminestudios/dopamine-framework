@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 from ..bot import Bot
 from ..core.commands_registry import CommandRegistry
 import logging
+import io
 
 if TYPE_CHECKING:
     from discord.ext import commands
@@ -188,31 +189,40 @@ class OwnerDashboard(PrivateLayoutView):
             handler.flush()
 
         if not os.path.exists(log_path):
-            return await interaction.response.send_message("Dopamine Framework: ERROR: Log file not found.",
-                                                           ephemeral=True)
+            return await interaction.response.send_message(
+                "Dopamine Framework: ERROR: Log file not found.",
+                ephemeral=True
+            )
 
-        await interaction.response.defer()
+        await interaction.response.defer(ephemeral=True)
+
         try:
-            with open(log_path, "rb") as f:
-                log_data = f.read()
+            with open(log_path, "r", encoding="utf-8", errors="replace") as f:
+                all_lines = f.readlines()
+                trailing_lines = all_lines[-70:] if len(all_lines) > 70 else all_lines
+                text_content = "".join(trailing_lines)
 
-                if not log_data.strip():
-                    return await interaction.response.send_message("Log file is empty.", ephemeral=True)
+                if not text_content.strip():
+                    return await interaction.followup.send("Log file is empty.", ephemeral=True)
 
-                if len(log_data) > 1900:
-                    f.seek(0)
+                if len(text_content) > 1900:
+                    log_file = discord.File(
+                        io.BytesIO(text_content.encode("utf-8")),
+                        filename="tail_discord.log"
+                    )
                     await interaction.followup.send(
-                        "Dopamine Framework: Log exceeds 1900 chars, sending file:",
-                        file=discord.File(f, filename="discord.log"),
+                        "Dopamine Framework: Last 70 lines exceed 1900 chars, sending snippet file:",
+                        file=log_file,
                         ephemeral=True
                     )
                 else:
-                    text_content = log_data.decode("utf-8")
-                    await interaction.followup.send(f"```\n{text_content}\n```", ephemeral=True)
+                    await interaction.followup.send(f"### Last 70 Log Lines\n```\n{text_content}\n```", ephemeral=True)
 
         except Exception as e:
-            await interaction.followup.send(f"Dopamine Framework: ERROR: Failed to read log: {e}",
-                                                    ephemeral=True)
+            await interaction.followup.send(
+                f"Dopamine Framework: ERROR: Failed to read log: {e}",
+                ephemeral=True
+            )
 
 class OwnerGoToPageModal(discord.ui.Modal):
     def __init__(self, parent_view: OwnerDashboard, total_pages: int):
