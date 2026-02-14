@@ -1,3 +1,8 @@
+## [v1.4.8](https://github.com/likerofturtles/dopamine-framework/compare/vv1.4.7...vv1.4.8) (2026-02-14)
+### Bug Fixes
+
+* Hotfix: Fixed the error: Dopamine Framework: ERROR: Failed to read log: seek of closed file. ([0e91423](https://github.com/likerofturtles/dopamine-framework/commit/0e91423bc5b74d91db1e9b31fc57542cf541a4bf))
+
 ## [v1.4.7](https://github.com/likerofturtles/dopamine-framework/compare/vv1.4.6...vv1.4.7) (2026-02-14)
 ### Bug Fixes
 
