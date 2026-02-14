@@ -1,3 +1,8 @@
+## [v1.4.3](https://github.com/likerofturtles/dopamine-framework/compare/vv1.4.2...vv1.4.3) (2026-02-14)
+### Bug Fixes
+
+* Hotfix: Fixed conflict with commands.Bot internal "status" object ([1e3f616](https://github.com/likerofturtles/dopamine-framework/commit/1e3f61619f7802221b672ac7bc49ae19d6dc2af3))
+
 ## [v1.4.2](https://github.com/likerofturtles/dopamine-framework/compare/vv1.4.1...vv1.4.2) (2026-02-13)
 ### Bug Fixes
 
