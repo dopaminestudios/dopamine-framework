@@ -31,8 +31,8 @@ class Bot(commands.Bot):
         self.log_path = log_path
         self.process_start_time = time.time()
         self.default_diagnostics = default_diagnostics
-        self.status=status
-        self.activity=activity
+        self._status=status
+        self._activity=activity
         self.registry = CommandRegistry(self)
         self.logger = None
         self.start_time = None
@@ -109,17 +109,17 @@ class Bot(commands.Bot):
 
         print(banner)
 
-        if self.activity and self.status:
+        if self._activity and self._status:
             try:
                 await self.change_presence(activity=self.activity, status=self.status)
             except Exception as e:
                 logger.critical(f"Dopamine Framework: ERROR: Failed to set activity or status: {e}")
-        elif self.activity:
+        elif self._activity:
             try:
                 await self.change_presence(activity=self.activity)
             except Exception as e:
                 logger.critical(f"Dopamine Framework: ERROR: Failed to set activity: {e}")
-        elif self.status:
+        elif self._status:
             try:
                 await self.change_presence(status=self.status)
             except Exception as e:
