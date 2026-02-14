@@ -1,3 +1,8 @@
+## [v1.4.5](https://github.com/likerofturtles/dopamine-framework/compare/vv1.4.4...vv1.4.5) (2026-02-14)
+### Bug Fixes
+
+* Added separate unloading for internal cogs so they don't show up mixed with user's cogs during shutdown. ([cf16529](https://github.com/likerofturtles/dopamine-framework/commit/cf16529b00300cacbc13c926b38db784665124a1))
+
 ## [v1.4.4](https://github.com/likerofturtles/dopamine-framework/compare/vv1.4.3...vv1.4.4) (2026-02-14)
 ### Bug Fixes
 
