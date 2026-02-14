@@ -10,19 +10,21 @@ class CommandRegistry:
         self.bot = bot
 
     def _get_command_signature(self, command):
+        command_type = getattr(command, 'type', discord.AppCommandType.chat_input)
+
         signature = {
             "name": command.name,
-            "type": int(command.type.value),
+            "type": int(command_type.value),
             "description": getattr(command, 'description', ""),
             "options": []
         }
 
-        if command.type.value == 1:
+        if signature["type"] == 1:
             if hasattr(command, 'commands'):
                 for sub_command in command.commands:
                     signature["options"].append(self._get_command_signature(sub_command))
-            elif hasattr(command, 'parameters'):
-                for param in command.parameters:
+            elif hasattr(command, '_params'):
+                for param in command._params.values():
                     signature["options"].append({
                         "name": param.name,
                         "description": param.description,
