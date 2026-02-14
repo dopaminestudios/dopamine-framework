@@ -1,3 +1,8 @@
+## [v1.4.7](https://github.com/likerofturtles/dopamine-framework/compare/vv1.4.6...vv1.4.7) (2026-02-14)
+### Bug Fixes
+
+* Fixed "show log" button only showing the first 50-60 lines of the log. ([2eb0a07](https://github.com/likerofturtles/dopamine-framework/commit/2eb0a07c59912a1083e0c73df3e12b6d8cd55018))
+
 ## [v1.4.6](https://github.com/likerofturtles/dopamine-framework/compare/vv1.4.5...vv1.4.6) (2026-02-14)
 ### Bug Fixes
 
