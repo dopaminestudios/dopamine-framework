@@ -32,7 +32,7 @@ class OwnerDashboard(PrivateLayoutView):
         self.bot = bot
         self.page = page
         self.items_per_page = 5
-        self.registry = CommandRegistry(self)
+        self.registry = CommandRegistry(bot)
         self.build_layout()
 
     def build_layout(self):
@@ -165,13 +165,13 @@ class OwnerDashboard(PrivateLayoutView):
 
     async def sync_callback(self, interaction: discord.Interaction):
         await interaction.response.defer()
-        response = await self.registry.force_sync(guild=None)
-        await interaction.followup_send(response, ephemeral=True)
+        response = await self.registry.smart_sync(guild=None)
+        await interaction.followup.send(response, ephemeral=True)
 
     async def sync_local_callback(self, interaction: discord.Interaction):
         await interaction.response.defer()
-        response = await self.registry.force_sync(guild=interaction.guild)
-        await interaction.followup_send(response, ephemeral=True)
+        response = await self.registry.smart_sync(guild=interaction.guild)
+        await interaction.followup.send(response, ephemeral=True)
 
 
     async def shutdown_callback(self, interaction: discord.Interaction):
