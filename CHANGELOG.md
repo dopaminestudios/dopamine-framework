@@ -1,3 +1,8 @@
+## [v1.4.15](https://github.com/likerofturtles/dopamine-framework/compare/vv1.4.14...vv1.4.15) (2026-02-19)
+### Bug Fixes
+
+* Fixed sync buttons in owner dashboard. ([2856a58](https://github.com/likerofturtles/dopamine-framework/commit/2856a58afd0d58bbf0e86351f5972542b483d5b5))
+
 ## [v1.4.14](https://github.com/likerofturtles/dopamine-framework/compare/vv1.4.13...vv1.4.14) (2026-02-18)
 ### Bug Fixes
 
