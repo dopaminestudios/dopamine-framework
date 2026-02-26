@@ -15,7 +15,7 @@ class CommandRegistry:
         signature = {
             "name": command.name,
             "type": int(command_type.value),
-            "description": getattr(command, 'description', ""),
+            "description": getattr(command, 'description', "") or "",
             "options": []
         }
 
@@ -27,13 +27,35 @@ class CommandRegistry:
                 for param in command._params.values():
                     signature["options"].append({
                         "name": param.name,
-                        "description": param.description,
+                        "description": param.description or "",
                         "type": int(param.type.value),
-                        "required": param.required
+                        "required": getattr(param, 'required', True)
                     })
 
         signature["options"] = sorted(signature["options"], key=lambda x: x["name"])
         return signature
+
+    def _parse_remote_signature(self, command):
+        options = []
+        raw_options = getattr(command, 'options', [])
+
+        for opt in raw_options:
+            if opt.type.value in (1, 2):
+                options.append(self._parse_remote_signature(opt))
+            else:
+                options.append({
+                    "name": opt.name,
+                    "description": opt.description or "",
+                    "type": int(opt.type.value),
+                    "required": getattr(opt, 'required', False)
+                })
+
+        return {
+            "name": command.name,
+            "type": int(command.type.value),
+            "description": getattr(command, 'description', "") or "",
+            "options": sorted(options, key=lambda x: x["name"])
+        }
 
     async def get_sync_status(self, guild: discord.Guild = None):
         local_commands = self.bot.tree.get_commands(guild=guild)
@@ -47,47 +69,21 @@ class CommandRegistry:
             return False
 
         local_map = {c.name: self._get_command_signature(c) for c in local_commands}
-
-        remote_map = {}
-        for c in remote_commands:
-            remote_map[c.name] = self._parse_remote_signature(c)
+        remote_map = {c.name: self._parse_remote_signature(c) for c in remote_commands}
 
         return local_map == remote_map
 
-    def _parse_remote_signature(self, command):
-        options = []
-        raw_options = getattr(command, 'options', [])
-
-        for opt in raw_options:
-            if opt.type.value in (1, 2):
-                options.append(self._parse_remote_signature(opt))
-            else:
-                options.append({
-                    "name": opt.name,
-                    "description": opt.description,
-                    "type": int(opt.type.value),
-                    "required": getattr(opt, 'required', False)
-                })
-
-        return {
-            "name": command.name,
-            "type": int(command.type.value),
-            "description": getattr(command, 'description', ""),
-            "options": sorted(options, key=lambda x: x["name"])
-        }
-
     async def smart_sync(self, guild: discord.Guild = None):
         is_synced = await self.get_sync_status(guild)
-
         scope = f"Guild({guild.id})" if guild else "Global"
 
         if not is_synced:
             logger.info(f"Dopamine Framework: Detected changes. Syncing {scope} commands...")
             await self.bot.tree.sync(guild=guild)
-            return f"Dopamine Framework: {scope} commands synced successfully."
-        else:
-            logger.info(f"No changes detected for {scope}. Skipping sync.")
-            return f"Dopamine Framework: {scope} commands are already up to date."
+            return f"Dopamine Framework: Detected changes, completed {scope} commands sync successfully."
+
+        logger.info(f"No changes detected for {scope}. Skipping sync.")
+        return f"Dopamine Framework: {scope} commands are already up to date."
 
     async def force_sync(self, guild: discord.Guild = None):
         scope = f"Guild: {guild.name} ({guild.id})" if guild else "Global"
