@@ -1,3 +1,9 @@
+## [v1.4.25](https://github.com/dopaminestudios/dopamine-framework/compare/vv1.4.24...vv1.4.25) (2026-02-26)
+### Bug Fixes
+
+* Added s to the second string ([ff55f88](https://github.com/dopaminestudios/dopamine-framework/commit/ff55f8831b408352594df9dfe104f9c244a9814f))
+* Made the return statement more verbose ([3ee421c](https://github.com/dopaminestudios/dopamine-framework/commit/3ee421c36ba70f5a95fe84d3c0d6ecc8971f1790))
+
 ## [v1.4.24](https://github.com/dopaminestudios/dopamine-framework/compare/vv1.4.23...vv1.4.24) (2026-02-26)
 ### Bug Fixes
 
