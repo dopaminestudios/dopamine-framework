@@ -1,3 +1,12 @@
+## [v1.4.27](https://github.com/dopaminestudios/dopamine-framework/compare/vv1.4.26...vv1.4.27) (2026-02-26)
+### Bug Fixes
+
+* Removed internal cogs from the reload all cogs button. ([189e66a](https://github.com/dopaminestudios/dopamine-framework/commit/189e66abf7e7cf484ffb3885529e9d0299837f9f))
+
+### Documentation Changes
+
+* Updated readme. ([8ad9495](https://github.com/dopaminestudios/dopamine-framework/commit/8ad94955cad5dacc0231ada241449665a2597a65))
+
 ## [v1.4.26](https://github.com/dopaminestudios/dopamine-framework/compare/vv1.4.25...vv1.4.26) (2026-02-26)
 ### Bug Fixes
 
