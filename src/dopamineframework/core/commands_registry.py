@@ -10,7 +10,10 @@ class CommandRegistry:
         self.bot = bot
 
     def _get_command_signature(self, command):
-        command_type = getattr(command, 'type', discord.AppCommandType.chat_input)
+        if isinstance(command, discord.app_commands.ContextMenu):
+            command_type = command.type
+        else:
+            command_type = getattr(command, 'type', discord.AppCommandType.chat_input)
 
         signature = {
             "name": command.name,
@@ -31,6 +34,8 @@ class CommandRegistry:
                         "type": int(param.type.value),
                         "required": getattr(param, 'required', True)
                     })
+        else:
+            signature["description"] = ""
 
         signature["options"] = sorted(signature["options"], key=lambda x: x["name"])
         return signature
