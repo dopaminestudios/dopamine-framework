@@ -2,6 +2,7 @@ import logging
 import discord
 import hashlib
 import json
+import os
 from discord import app_commands
 
 logger = logging.getLogger("discord")
@@ -10,97 +11,98 @@ logger = logging.getLogger("discord")
 class CommandRegistry:
     def __init__(self, bot):
         self.bot = bot
+        self.state_path = os.path.join("core", "sync_state.json")
 
-    def _get_clean_signature(self, command, is_remote=False):
-        if is_remote:
-            cmd_type = int(command.type.value)
-        elif isinstance(command, discord.app_commands.ContextMenu):
+    def _get_local_signature(self, command):
+        if isinstance(command, discord.app_commands.ContextMenu):
             cmd_type = command.type.value
+        elif isinstance(command, discord.app_commands.Group):
+            cmd_type = 1
         else:
             cmd_type = 1
 
-        description = getattr(command, 'description', "") or ""
-        if cmd_type in (2, 3):
-            description = ""
-
         signature = {
-            "name": str(command.name).lower(),
+            "name": str(command.name),
             "type": cmd_type,
-            "description": str(description),
-            "nsfw": getattr(command, 'nsfw', False),
-            "dm_permission": getattr(command, 'dm_permission', True),
+            "description": getattr(command, 'description', "") if cmd_type == 1 else "",
             "options": []
         }
 
-        if cmd_type in (1, 2):
-            raw_options = []
-            if is_remote:
-                raw_options = getattr(command, 'options', [])
+        raw_options = []
+        if hasattr(command, 'commands'):
+            raw_options = command.commands
+        elif hasattr(command, '_params'):
+            raw_options = command._params.values()
+
+        for opt in raw_options:
+            if isinstance(opt, (discord.app_commands.Command, discord.app_commands.Group)):
+                signature["options"].append(self._get_local_signature(opt))
             else:
-                if hasattr(command, 'commands'):
-                    raw_options = command.commands
-                elif hasattr(command, '_params'):
-                    raw_options = command._params.values()
+                opt_data = {
+                    "name": str(opt.name),
+                    "description": str(opt.description or ""),
+                    "type": int(opt.type.value),
+                    "required": getattr(opt, 'required', True)
+                }
+                if hasattr(opt, 'choices') and opt.choices:
+                    opt_data["choices"] = sorted([str(c.value) for c in opt.choices])
 
-            for opt in raw_options:
-                is_sub = False
-                if is_remote:
-                    is_sub = int(opt.type.value) in (1, 2)
-                else:
-                    is_sub = isinstance(opt, (discord.app_commands.Command, discord.app_commands.Group))
-
-                if is_sub:
-                    signature["options"].append(self._get_clean_signature(opt, is_remote=is_remote))
-                else:
-                    signature["options"].append({
-                        "name": str(opt.name).lower(),
-                        "description": str(opt.description or ""),
-                        "type": int(opt.type.value),
-                        "required": bool(getattr(opt, 'required', False))
-                    })
+                signature["options"].append(opt_data)
 
         signature["options"] = sorted(signature["options"], key=lambda x: x["name"])
         return signature
 
-    def _generate_hash(self, command_map):
-        sorted_map = {k: command_map[k] for k in sorted(command_map.keys())}
+    def _generate_tree_hash(self, guild: discord.Guild = None):
+        local_commands = self.bot.tree.get_commands(guild=guild)
+        local_map = {c.name: self._get_local_signature(c) for c in local_commands}
+
+        sorted_map = {k: local_map[k] for k in sorted(local_map.keys())}
         dump = json.dumps(sorted_map, sort_keys=True)
         return hashlib.sha256(dump.encode('utf-8')).hexdigest()
 
-    async def get_sync_status(self, guild: discord.Guild = None):
-        local_commands = self.bot.tree.get_commands(guild=guild)
+    def _get_stored_hash(self, scope_id: str):
+        if not os.path.exists(self.state_path):
+            return None
         try:
-            remote_commands = await self.bot.tree.fetch_commands(guild=guild)
-        except Exception as e:
-            logger.error(f"Dopamine Framework: Failed to fetch: {e}")
-            return False
+            with open(self.state_path, "r") as f:
+                data = json.load(f)
+                return data.get(scope_id)
+        except Exception:
+            return None
 
-        if len(local_commands) != len(remote_commands):
-            return False
+    def _save_hash(self, scope_id: str, new_hash: str):
+        os.makedirs(os.path.dirname(self.state_path), exist_ok=True)
+        data = {}
+        if os.path.exists(self.state_path):
+            try:
+                with open(self.state_path, "r") as f:
+                    data = json.load(f)
+            except Exception:
+                pass
 
-        local_map = {c.name: self._get_clean_signature(c, is_remote=False) for c in local_commands}
-        remote_map = {c.name: self._get_clean_signature(c, is_remote=True) for c in remote_commands}
-
-        local_hash = self._generate_hash(local_map)
-        remote_hash = self._generate_hash(remote_map)
-
-        if local_hash != remote_hash:
-            logger.debug(f"Local Hash: {local_hash}")
-            logger.debug(f"Remote Hash: {remote_hash}")
-
-        return local_hash == remote_hash
+        data[scope_id] = new_hash
+        with open(self.state_path, "w") as f:
+            json.dump(data, f, indent=4)
 
     async def smart_sync(self, guild: discord.Guild = None):
-        is_synced = await self.get_sync_status(guild)
-        scope = f"Guild({guild.id})" if guild else "Global"
+        scope_id = f"guild_{guild.id}" if guild else "global"
+        scope_name = f"Guild({guild.id})" if guild else "Global"
 
-        if not is_synced:
-            logger.info(f"Dopamine Framework: Detected changes. Syncing {scope} commands...")
-            await self.bot.tree.sync(guild=guild)
-            return f"Dopamine Framework: Detected changes, completed {scope} commands sync successfully."
+        current_hash = self._generate_tree_hash(guild)
+        stored_hash = self._get_stored_hash(scope_id)
 
-        logger.info(f"No changes detected for {scope}. Skipping sync.")
-        return f"Dopamine Framework: {scope} commands are already up to date."
+        if current_hash != stored_hash:
+            logger.info(f"Dopamine Framework: Detected local changes. Syncing {scope_name} commands...")
+            try:
+                await self.bot.tree.sync(guild=guild)
+                self._save_hash(scope_id, current_hash)
+                return f"Dopamine Framework: Sync complete for {scope_name}."
+            except Exception as e:
+                logger.error(f"Dopamine Framework: Sync failed: {e}")
+                return f"Dopamine Framework: Error syncing {scope_name}."
+
+        logger.info(f"Dopamine Framework: {scope_name} commands are already up to date (Local Hash Match).")
+        return f"Dopamine Framework: {scope_name} commands are up to date."
 
     async def force_sync(self, guild: discord.Guild = None):
         scope = f"Guild: {guild.name} ({guild.id})" if guild else "Global"
