@@ -131,6 +131,7 @@ class Bot(commands.Bot):
         banner = ("\n"
                   f"---------------------------------------------------\n"
                   f"Powered by Dopamine Framework v{framework_version}\n"
+                  "\n"
                   f"Internal Initialization Time (setup hook + init of Bot class): {self.total_setup_time:.2f}s\n"
                   f"Time taken by on_ready: {total_ready:.2f}s\n"
                   "\n"
