@@ -102,7 +102,7 @@ class CommandRegistry:
                 return f"Dopamine Framework: Error syncing {scope_name}."
 
         logger.info(f"Dopamine Framework: {scope_name} commands are already up to date (Local Hash Match).")
-        return f"Dopamine Framework: {scope_name} commands are up to date. Skipping API call."
+        return f"Dopamine Framework: Compared stored local hash to current local hash. {scope_name} commands are up to date. Skipping sync API call."
 
     async def force_sync(self, guild: discord.Guild = None):
         scope = f"Guild: {guild.name} ({guild.id})" if guild else "Global"
