@@ -12,13 +12,13 @@ class CommandRegistry:
         self.bot = bot
 
     def _get_clean_signature(self, command, is_remote=False):
-        """
-        Normalizes both local and remote commands into an identical dictionary format.
-        """
-        if not is_remote and isinstance(command, discord.app_commands.ContextMenu):
+
+        if is_remote:
+            cmd_type = int(command.type.value)
+        elif isinstance(command, discord.app_commands.ContextMenu):
             cmd_type = command.type.value
         else:
-            cmd_type = int(command.type.value)
+            cmd_type = 1
 
         description = getattr(command, 'description', "") or ""
         if cmd_type in (2, 3):
@@ -43,7 +43,7 @@ class CommandRegistry:
 
             for opt in raw_options:
                 if is_remote:
-                    if opt.type.value in (1, 2):
+                    if int(opt.type.value) in (1, 2):
                         signature["options"].append(self._get_clean_signature(opt, is_remote=True))
                     else:
                         signature["options"].append({
