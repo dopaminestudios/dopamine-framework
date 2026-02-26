@@ -1,3 +1,8 @@
+## [v1.4.22](https://github.com/dopaminestudios/dopamine-framework/compare/vv1.4.21...vv1.4.22) (2026-02-26)
+### Bug Fixes
+
+* Finally fixed command sync always being triggered even with no changes by comparing local last synced hash with local now hash. No need for API calls now ([6bab338](https://github.com/dopaminestudios/dopamine-framework/commit/6bab33887488f493e4de73f5e86d5508af45fab6))
+
 ## [v1.4.21](https://github.com/dopaminestudios/dopamine-framework/compare/vv1.4.20...vv1.4.21) (2026-02-26)
 ### Bug Fixes
 
