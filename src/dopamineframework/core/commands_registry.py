@@ -25,9 +25,9 @@ class CommandRegistry:
             description = ""
 
         signature = {
-            "name": command.name,
+            "name": str(command.name),
             "type": cmd_type,
-            "description": description,
+            "description": str(description),
             "options": []
         }
 
@@ -47,8 +47,8 @@ class CommandRegistry:
                         signature["options"].append(self._get_clean_signature(opt, is_remote=True))
                     else:
                         signature["options"].append({
-                            "name": opt.name,
-                            "description": opt.description or "",
+                            "name": str(opt.name),
+                            "description": str(opt.description or ""),
                             "type": int(opt.type.value),
                             "required": getattr(opt, 'required', False)
                         })
@@ -57,8 +57,8 @@ class CommandRegistry:
                         signature["options"].append(self._get_clean_signature(opt, is_remote=False))
                     else:
                         signature["options"].append({
-                            "name": opt.name,
-                            "description": opt.description or "",
+                            "name": str(opt.name),
+                            "description": str(opt.description or ""),
                             "type": int(opt.type.value),
                             "required": getattr(opt, 'required', True)
                         })
