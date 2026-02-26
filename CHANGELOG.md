@@ -1,3 +1,8 @@
+## [v1.4.18](https://github.com/dopaminestudios/dopamine-framework/compare/vv1.4.17...vv1.4.18) (2026-02-26)
+### Bug Fixes
+
+* Switched to hashing to fix command sync always being triggered ([6ab4149](https://github.com/dopaminestudios/dopamine-framework/commit/6ab41496217d9a8cda9e9c57e3a0b2ec591d801c))
+
 ## [v1.4.17](https://github.com/dopaminestudios/dopamine-framework/compare/vv1.4.16...vv1.4.17) (2026-02-26)
 ### Bug Fixes
 
