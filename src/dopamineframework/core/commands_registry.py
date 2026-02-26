@@ -92,11 +92,11 @@ class CommandRegistry:
         stored_hash = self._get_stored_hash(scope_id)
 
         if current_hash != stored_hash:
-            logger.info(f"Dopamine Framework: Detected local changes. Syncing {scope_name} commands...")
+            logger.info(f"Dopamine Framework: Detected  changes. Syncing {scope_name} commands...")
             try:
                 await self.bot.tree.sync(guild=guild)
                 self._save_hash(scope_id, current_hash)
-                return f"Dopamine Framework: Sync complete for {scope_name}."
+                return f"Dopamine Framework: Detected changes, and completed command sync for {scope_name} successfully."
             except Exception as e:
                 logger.error(f"Dopamine Framework: Sync failed: {e}")
                 return f"Dopamine Framework: Error syncing {scope_name}."
