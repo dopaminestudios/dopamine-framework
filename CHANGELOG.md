@@ -1,3 +1,8 @@
+## [v1.5.0](https://github.com/dopaminestudios/dopamine-framework/compare/vv1.4.28...vv1.5.0) (2026-03-03)
+### Features & Minor Updates and Changes
+
+* Updated ViewPaginator to handle the chunking itself. ([686b853](https://github.com/dopaminestudios/dopamine-framework/commit/686b853e404b59e121e7f7e6de273e7278bad570))
+
 ## [v1.4.28](https://github.com/dopaminestudios/dopamine-framework/compare/vv1.4.27...vv1.4.28) (2026-03-03)
 ### Bug Fixes
 
