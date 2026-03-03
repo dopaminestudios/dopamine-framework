@@ -29,12 +29,22 @@ class GoToPageModal(Modal):
             await interaction.response.send_message("Invalid number entered.", ephemeral=True)
 
 
-class ViewPaginator(View):
-    def __init__(self, data: List[Any], per_page: int = 10, timeout: int = 120):
+class ViewPaginator(discord.ui.View):
+    def __init__(
+            self,
+            title: str,
+            data: List[str],
+            per_page: int = 10,
+            color: discord.Color = discord.Color.blue(),
+            timeout: int = 120
+    ):
         super().__init__(timeout=timeout)
+        self.title = title
         self.data = data
-        self.page = 1
         self.per_page = per_page
+        self.color = color
+
+        self.page = 1
         self.total_pages = (len(self.data) - 1) // per_page + 1 if data else 1
 
         self.update_button_states()
@@ -44,26 +54,37 @@ class ViewPaginator(View):
         self.next_page.disabled = (self.page == self.total_pages)
         self.go_to_page.disabled = (self.total_pages <= 1)
 
-    def get_current_page_data(self):
+    def format_embed(self) -> discord.Embed:
         start = (self.page - 1) * self.per_page
-        return self.data[start: start + self.per_page]
+        end = start + self.per_page
+        current_chunk = self.data[start:end]
+
+        description = "\n".join(current_chunk) if current_chunk else "No data available."
+
+        embed = discord.Embed(
+            title=self.title,
+            description=description,
+            color=self.color
+        )
+        embed.set_footer(text=f"Page {self.page} of {self.total_pages}")
+        return embed
 
     async def update_view(self, interaction: discord.Interaction):
         self.update_button_states()
-        await interaction.response.edit_message(view=self)
+        await interaction.response.edit_message(embed=self.format_embed(), view=self)
 
     @discord.ui.button(emoji="◀️", style=discord.ButtonStyle.gray)
-    async def prev_page(self, interaction: discord.Interaction, button: Button):
+    async def prev_page(self, interaction: discord.Interaction, button: discord.ui.Button):
         if self.page > 1:
             self.page -= 1
             await self.update_view(interaction)
 
     @discord.ui.button(label="Go To Page", style=discord.ButtonStyle.gray)
-    async def go_to_page(self, interaction: discord.Interaction, button: Button):
+    async def go_to_page(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.send_modal(GoToPageModal(self, self.total_pages))
 
     @discord.ui.button(emoji="▶️", style=discord.ButtonStyle.gray)
-    async def next_page(self, interaction: discord.Interaction, button: Button):
+    async def next_page(self, interaction: discord.Interaction, button: discord.ui.Button):
         if self.page < self.total_pages:
             self.page += 1
             await self.update_view(interaction)
