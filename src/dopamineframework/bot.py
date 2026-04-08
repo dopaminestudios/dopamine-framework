@@ -38,6 +38,7 @@ class Bot(commands.Bot):
         self.registry = CommandRegistry(self)
         self.logger = None
         self.start_time = None
+        self.count = None
         self.total_setup_time = None
 
     async def setup_hook(self):
@@ -46,6 +47,8 @@ class Bot(commands.Bot):
                 self.logger = LoggingManager(self.log_path)
             except Exception as e:
                 logger.error(f"Dopamine Framework: Failed to initialize logging manager: {e}")
+
+        count = 0
 
         if os.path.exists(self.cogs_path):
             base_module = self.cogs_path.replace(os.path.sep, ".").strip(".")
@@ -56,8 +59,10 @@ class Bot(commands.Bot):
                     try:
                         await self.load_extension(extension)
                         print(f"> Dopamine Framework: Loaded {extension} Successfully")
+                        count += 1
                     except Exception as e:
                         print(f"Dopamine Framework: ERROR: Failed to load {extension}: {e}")
+            self.count = count
         else:
             print(f"Dopamine Framework: WARNING: '{self.cogs_path}' directory not found.")
         if self.default_diagnostics:
@@ -134,6 +139,7 @@ class Bot(commands.Bot):
                   "\n"
                   f"Internal Initialization Time (setup hook + init of Bot class): {self.total_setup_time:.2f}s\n"
                   f"Time taken by on_ready: {total_ready:.2f}s\n"
+                  f"Total Cogs Loaded: {self.count}\n"
                   "\n"
                   f"Bot ready: {self.user} (ID: {self.user.id})\n"
                   f"Bot Owner identified: {owner_user_name}\n"
