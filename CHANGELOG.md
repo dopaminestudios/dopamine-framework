@@ -1,3 +1,10 @@
+## [v1.6.0](https://github.com/dopaminestudios/dopamine-framework/compare/vv1.5.0...vv1.6.0) (2026-04-08)
+### Features & Minor Updates and Changes
+
+* Banner now displays count of number of cogs loaded. ([3460bb9](https://github.com/dopaminestudios/dopamine-framework/commit/3460bb9b498b8b109947326793f7368f68eb3e60))
+* Bot loaded banner is now printed into the logger as well, instead of just the console like before. ([5ce4cd0](https://github.com/dopaminestudios/dopamine-framework/commit/5ce4cd0ff5b30c25709f478e355a490642c69dbe))
+* String printed into logger upon skipping sync is now more verbose, matching the one shown inside Discord in Owner Dashboard. ([5abaff5](https://github.com/dopaminestudios/dopamine-framework/commit/5abaff55de0b4cb9af0d59c752d6d5c3b9528724))
+
 ## [v1.5.0](https://github.com/dopaminestudios/dopamine-framework/compare/vv1.4.28...vv1.5.0) (2026-03-03)
 ### Features & Minor Updates and Changes
 
