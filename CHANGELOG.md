@@ -1,3 +1,8 @@
+## [v2.1.1](https://github.com/dopaminestudios/dopamine-framework/compare/vv2.1.0...vv2.1.1) (2026-04-09)
+### Bug Fixes
+
+* Hotfix: Fixed preconditions not working at all in command groups. It was caused by adding them to the GROUP instead of the COMMANDS inside it. ([2c28b6c](https://github.com/dopaminestudios/dopamine-framework/commit/2c28b6cddc87d729b0fa9eaa1ac1b6bf3ce35fae))
+
 ## [v2.1.0](https://github.com/dopaminestudios/dopamine-framework/compare/vv2.0.2...vv2.1.0) (2026-04-09)
 ### Features & Minor Updates and Changes
 
