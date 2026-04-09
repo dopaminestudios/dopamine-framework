@@ -1,3 +1,8 @@
+## [v2.0.2](https://github.com/dopaminestudios/dopamine-framework/compare/vv2.0.1...vv2.0.2) (2026-04-09)
+### Bug Fixes
+
+* Hotfix: Fixed error in... error handler for command rate limiter. ([c971ad6](https://github.com/dopaminestudios/dopamine-framework/commit/c971ad6309c5041b37e4696a61eefa93da364e94))
+
 ## [v2.0.1](https://github.com/dopaminestudios/dopamine-framework/compare/vv2.0.0...vv2.0.1) (2026-04-09)
 ### Bug Fixes
 
