@@ -11,7 +11,28 @@ def command(
         cooldown: tuple[int, float] = None,
         **kwargs
 ):
+    """Build a slash-command decorator that applies framework defaults and checks.
+
+    Args:
+        name: Slash-command name override.
+        description: Slash-command description override.
+        global_cooldown: Whether the framework-level cooldown should be attached.
+        permissions_preset: Optional preset name that adds permission checks.
+        cooldown: Optional per-command cooldown as a `(rate, per)` tuple.
+        **kwargs: Additional keyword arguments forwarded to the underlying API.
+
+    Returns:
+        Any: Result produced by this function.
+    """
     def decorator(func):
+        """Transform a coroutine into an app command with configured checks.
+
+        Args:
+            func: Function that will be wrapped by this decorator.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         cmd = app_commands.command(
             name=name or func.__name__,
             description=description or (func.__doc__ or "No description provided"),
@@ -33,6 +54,9 @@ def command(
 
 
 class Group(app_commands.Group):
+    """Custom app-command group that inherits Dopamine defaults.
+
+    """
     def __init__(
             self,
             name: str = None,
@@ -42,6 +66,16 @@ class Group(app_commands.Group):
             cooldown: tuple[int, float] = None,
             **kwargs
     ):
+        """Initialize a command group with optional preset and cooldown checks.
+
+        Args:
+            name: Slash-command name override.
+            description: Slash-command description override.
+            global_cooldown: Whether the framework-level cooldown should be attached.
+            permissions_preset: Optional preset name that adds permission checks.
+            cooldown: Optional per-command cooldown as a `(rate, per)` tuple.
+            **kwargs: Additional keyword arguments forwarded to the underlying API.
+        """
         super().__init__(
             name=name or self.__class__.__name__.lower(),
             description=description or (self.__doc__ or "No description provided"),

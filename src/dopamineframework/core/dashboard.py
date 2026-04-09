@@ -13,11 +13,29 @@ if TYPE_CHECKING:
     from discord.ext import commands
 
 class PrivateLayoutView(discord.ui.LayoutView):
+    """Base layout view that restricts interactions to one authorized user.
+
+    """
     def __init__(self, user: discord.User, *args, **kwargs):
+        """Initialize a restricted layout view for the provided user.
+
+        Args:
+            user: User that is allowed to interact with this flow.
+            *args: Additional positional arguments forwarded to the parent implementation.
+            **kwargs: Additional keyword arguments forwarded to the underlying API.
+        """
         super().__init__(*args, **kwargs)
         self.user = user
 
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
+        """Reject interactions from users other than the dashboard owner.
+
+        Args:
+            interaction: Interaction context received from Discord.
+
+        Returns:
+            bool: True when the check passes.
+        """
         if interaction.user.id != self.user.id:
             await interaction.response.send_message(
                 "This isn't for you!",
@@ -27,7 +45,17 @@ class PrivateLayoutView(discord.ui.LayoutView):
         return True
 
 class OwnerDashboard(PrivateLayoutView):
+    """Interactive owner dashboard for extension control and sync operations.
+
+    """
     def __init__(self, bot: 'commands.Bot', user: discord.User, page: int = 1):
+        """Initialize owner dashboard state and build the first layout.
+
+        Args:
+            bot: Bot instance that owns this object or callback.
+            user: User that is allowed to interact with this flow.
+            page: Initial dashboard page index (1-based).
+        """
         super().__init__(user, timeout=None)
         self.bot = bot
         self.page = page
@@ -36,6 +64,11 @@ class OwnerDashboard(PrivateLayoutView):
         self.build_layout()
 
     def build_layout(self):
+        """Rebuild all dashboard controls based on the current page and cog state.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         self.clear_items()
         container = discord.ui.Container()
         container.add_item((discord.ui.TextDisplay("## Dopamine Framework Owner Dashboard")))
@@ -121,7 +154,24 @@ class OwnerDashboard(PrivateLayoutView):
         self.add_item(container)
 
     def create_toggle_callback(self, ext_name, is_loaded):
+        """Create a button callback that loads or unloads one extension.
+
+        Args:
+            ext_name: Extension module path to toggle.
+            is_loaded: Whether the extension is currently loaded.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         async def callback(interaction: discord.Interaction):
+            """Toggle extension state and refresh the dashboard message.
+
+            Args:
+                interaction: Interaction context received from Discord.
+
+            Returns:
+                Any: Result produced by this function.
+            """
             try:
                 if is_loaded:
                     await self.bot.unload_extension(ext_name)
@@ -134,22 +184,54 @@ class OwnerDashboard(PrivateLayoutView):
         return callback
 
     async def prev_page(self, interaction: discord.Interaction):
+        """Move to the previous dashboard page and redraw controls.
+
+        Args:
+            interaction: Interaction context received from Discord.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         self.page -= 1
         self.build_layout()
         await interaction.response.edit_message(view=self)
 
     async def next_page(self, interaction: discord.Interaction):
+        """Move to the next dashboard page and redraw controls.
+
+        Args:
+            interaction: Interaction context received from Discord.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         self.page += 1
         self.build_layout()
         await interaction.response.edit_message(view=self)
 
     async def go_to_page_callback(self, interaction: discord.Interaction):
+        """Open a modal that lets the owner jump to a specific page.
+
+        Args:
+            interaction: Interaction context received from Discord.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         cogs_dir = os.path.join(os.getcwd(), "cogs")
         cog_files = [f for f in os.listdir(cogs_dir) if f.endswith(".py") and not f.startswith("__")] if os.path.exists(cogs_dir) else []
         total_pages = (len(cog_files) + self.items_per_page - 1) // self.items_per_page
         await interaction.response.send_modal(OwnerGoToPageModal(self, total_pages))
 
     async def reload_all_callback(self, interaction: discord.Interaction):
+        """Reload all non-internal extensions and report successes and failures.
+
+        Args:
+            interaction: Interaction context received from Discord.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         await interaction.response.defer(ephemeral=True)
         extensions = list(self.bot.extensions.keys())
         reloaded, failed = [], []
@@ -166,25 +248,65 @@ class OwnerDashboard(PrivateLayoutView):
         await interaction.followup.send(status, ephemeral=True)
 
     async def sync_callback(self, interaction: discord.Interaction):
+        """Run global smart sync for the app-command tree.
+
+        Args:
+            interaction: Interaction context received from Discord.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         await interaction.response.defer()
         response = await self.registry.smart_sync(guild=None)
         await interaction.followup.send(response, ephemeral=True)
 
     async def sync_local_callback(self, interaction: discord.Interaction):
+        """Run guild-scoped smart sync for the current server.
+
+        Args:
+            interaction: Interaction context received from Discord.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         await interaction.response.defer()
         response = await self.registry.smart_sync(guild=interaction.guild)
         await interaction.followup.send(response, ephemeral=True)
 
 
     async def shutdown_callback(self, interaction: discord.Interaction):
+        """Acknowledge and trigger a graceful bot shutdown.
+
+        Args:
+            interaction: Interaction context received from Discord.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         await interaction.response.send_message("Dopamine Framework: Shutting down...", ephemeral=True)
         await self.bot.signal_handler()
 
     async def restart_callback(self, interaction: discord.Interaction):
+        """Acknowledge and trigger a full bot process restart.
+
+        Args:
+            interaction: Interaction context received from Discord.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         await interaction.response.send_message("Dopamine Framework: Restarting process...", ephemeral=True)
         await self.bot.restart_bot()
 
     async def show_log_callback(self, interaction: discord.Interaction):
+        """Send the most recent log output to the owner safely.
+
+        Args:
+            interaction: Interaction context received from Discord.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         log_path = os.path.join(os.getcwd(), "discord.log")
 
         for handler in logging.getLogger().handlers:
@@ -227,7 +349,16 @@ class OwnerDashboard(PrivateLayoutView):
             )
 
 class OwnerGoToPageModal(discord.ui.Modal):
+    """Modal that asks the owner which dashboard page to open.
+
+    """
     def __init__(self, parent_view: OwnerDashboard, total_pages: int):
+        """Initialize page-jump modal bounds and input field.
+
+        Args:
+            parent_view: Dashboard view that will be updated after submission.
+            total_pages: Maximum number of available pages.
+        """
         super().__init__(title="Jump to Page")
         self.parent_view = parent_view
         self.total_pages = max(total_pages, 1)
@@ -239,6 +370,14 @@ class OwnerGoToPageModal(discord.ui.Modal):
         self.add_item(self.page_input)
 
     async def on_submit(self, interaction: discord.Interaction):
+        """Validate modal input and update the dashboard to the requested page.
+
+        Args:
+            interaction: Interaction context received from Discord.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         try:
             page_num = int(self.page_input.value)
             if 1 <= page_num <= self.total_pages:

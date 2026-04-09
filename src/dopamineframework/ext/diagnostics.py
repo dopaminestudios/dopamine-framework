@@ -13,7 +13,15 @@ import geocoder
 
 
 class Diagnostics(commands.Cog):
+    """Diagnostics cog that reports latency, uptime, and host health metrics.
+
+    """
     def __init__(self, bot):
+        """Initialize sampling state and start periodic latency collection.
+
+        Args:
+            bot: Bot instance that owns this object or callback.
+        """
         self.bot = bot
         self.latency_cache = deque(maxlen=1440)
         self.temp_samples = []
@@ -23,10 +31,20 @@ class Diagnostics(commands.Cog):
         self.cache_task.start()
 
     def cog_unload(self):
+        """Stop background sampling when the cog is unloaded.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         self.cache_task.cancel()
 
     @tasks.loop(seconds=5.0)
     async def cache_task(self):
+        """Collect API latency samples and keep rolling latency averages.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         if not self.bot.is_ready():
             return
 
@@ -61,11 +79,26 @@ class Diagnostics(commands.Cog):
 
     @cache_task.before_loop
     async def before_cache_task(self):
+        """Wait for readiness before starting periodic diagnostics sampling.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         await self.bot.wait_until_ready()
         await asyncio.sleep(10)
 
     async def get_location(self):
+        """Resolve host geolocation information from the current public IP.
+
+        Returns:
+            Any: Location.
+        """
         def fetch():
+            """Perform blocking IP geolocation lookup off the event loop.
+
+            Returns:
+                Any: Result produced by this function.
+            """
             g = geocoder.ip('me')
             if g.ok:
                 return f"{g.country} ({g.city})" if g.city else g.country
@@ -75,6 +108,11 @@ class Diagnostics(commands.Cog):
         return await loop.run_in_executor(None, fetch)
 
     def generate_latency_graph(self):
+        """Render the cached latency history into an in-memory PNG graph.
+
+        Returns:
+            Any: Generated latency graph result.
+        """
         scale_factor = 2
         width, height = 600 * scale_factor, 300 * scale_factor
         pad_top, pad_bot, pad_left, pad_right = 175, 80, 100, 40
@@ -159,7 +197,23 @@ class Diagnostics(commands.Cog):
     @app_commands.command(name="ping", description="Get detailed latency and bot information")
 
     async def info(self, interaction: discord.Interaction):
+        """Send an embed with detailed latency, uptime, and system stats.
+
+        Args:
+            interaction: Interaction context received from Discord.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         def format_uptime(seconds):
+            """Convert elapsed seconds into a compact human-readable duration.
+
+            Args:
+                seconds: Duration in seconds.
+
+            Returns:
+                Any: Formatted uptime value.
+            """
             weeks = seconds // (7 * 24 * 60 * 60)
             seconds %= (7 * 24 * 60 * 60)
             days = seconds // (24 * 60 * 60)
@@ -278,6 +332,14 @@ class Diagnostics(commands.Cog):
     latency = app_commands.Group(name="latency", description="Shows latency information about the bot")
     @latency.command(name="graph", description="Shows a graph of the average latency in the last 24 hours")
     async def graph(self, interaction: discord.Interaction):
+        """Return a generated latency trend graph when enough samples exist.
+
+        Args:
+            interaction: Interaction context received from Discord.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         await interaction.response.defer()
         try:
             graph_buffer = self.generate_latency_graph()
@@ -290,4 +352,12 @@ class Diagnostics(commands.Cog):
             await interaction.edit_original_response(content="Not enough data yet! The bot or cog was restarted very recently. Please wait a few minutes.")
 
 async def setup(bot):
+    """Attach the diagnostics cog to the running bot.
+
+    Args:
+        bot: Bot instance that owns this object or callback.
+
+    Returns:
+        Any: Result produced by this function.
+    """
     await bot.add_cog(Diagnostics(bot))

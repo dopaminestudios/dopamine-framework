@@ -9,11 +9,27 @@ logger = logging.getLogger("discord")
 
 
 class CommandRegistry:
+    """Tracks local app-command state and synchronizes it only when changed.
+
+    """
     def __init__(self, bot):
+        """Store bot context and initialize sync-state storage details.
+
+        Args:
+            bot: Bot instance that owns this object or callback.
+        """
         self.bot = bot
         self.state_path = os.path.join("core", "sync_state.json")
 
     def _get_local_signature(self, command):
+        """Build a deterministic signature dict for a local command node.
+
+        Args:
+            command: Application command object to inspect.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         if isinstance(command, discord.app_commands.ContextMenu):
             cmd_type = command.type.value
         elif isinstance(command, discord.app_commands.Group):
@@ -53,6 +69,14 @@ class CommandRegistry:
         return signature
 
     def _generate_tree_hash(self, guild: discord.Guild = None):
+        """Hash the current local command tree for a guild or global scope.
+
+        Args:
+            guild: Guild to scope the operation to; uses global scope when omitted.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         local_commands = self.bot.tree.get_commands(guild=guild)
         local_map = {c.name: self._get_local_signature(c) for c in local_commands}
 
@@ -61,6 +85,14 @@ class CommandRegistry:
         return hashlib.sha256(dump.encode('utf-8')).hexdigest()
 
     def _get_stored_hash(self, scope_id: str):
+        """Load the last persisted command-tree hash for a scope.
+
+        Args:
+            scope_id: Storage key for the sync-hash scope.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         if not os.path.exists(self.state_path):
             return None
         try:
@@ -71,6 +103,15 @@ class CommandRegistry:
             return None
 
     def _save_hash(self, scope_id: str, new_hash: str):
+        """Persist the latest command-tree hash for a scope.
+
+        Args:
+            scope_id: Storage key for the sync-hash scope.
+            new_hash: Freshly calculated command-tree hash.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         os.makedirs(os.path.dirname(self.state_path), exist_ok=True)
         data = {}
         if os.path.exists(self.state_path):
@@ -85,6 +126,14 @@ class CommandRegistry:
             json.dump(data, f, indent=4)
 
     async def smart_sync(self, guild: discord.Guild = None):
+        """Sync commands only when the local tree hash differs from stored state.
+
+        Args:
+            guild: Guild to scope the operation to; uses global scope when omitted.
+
+        Returns:
+            str: Human-readable sync status message.
+        """
         scope_id = f"guild_{guild.id}" if guild else "global"
         scope_name = f"Guild({guild.id})" if guild else "Global"
 
@@ -105,6 +154,14 @@ class CommandRegistry:
         return f"Dopamine Framework: Compared stored local hash to current local hash. {scope_name} commands are up to date. Skipping sync API call."
 
     async def force_sync(self, guild: discord.Guild = None):
+        """Force a command sync call regardless of hash comparison.
+
+        Args:
+            guild: Guild to scope the operation to; uses global scope when omitted.
+
+        Returns:
+            str: Human-readable sync status message.
+        """
         scope = f"Guild: {guild.name} ({guild.id})" if guild else "Global"
         try:
             await self.bot.tree.sync(guild=guild)

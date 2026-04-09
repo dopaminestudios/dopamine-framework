@@ -17,8 +17,25 @@ logger = logging.getLogger("discord")
 
 
 class Bot(commands.Bot):
+    """Framework bot subclass that loads extensions, syncs commands, and manages lifecycle.
+
+    """
     def __init__(self, cogs_path: str = "cogs", log_path: str = None, default_diagnostics: bool = True, status: discord.Status = None, activity: discord.Activity = None, global_cooldown_rate: int = 10,
         global_cooldown_per: float = 60.0, minimal_cacheing: bool = False, *args, **kwargs):
+        """Initialize the bot with framework defaults, cooldowns, and extension settings.
+
+        Args:
+            cogs_path: Directory that contains extension modules to load.
+            log_path: Path to the logging database file. If none is defined, logging backend is disabled.
+            default_diagnostics: Whether to load the built-in diagnostics extension at startup.
+            status: Discord presence status to apply when the bot is ready.
+            activity: Discord activity to apply when the bot is ready.
+            global_cooldown_rate: Default global cooldown rate limit for slash commands.
+            global_cooldown_per: Default global cooldown window in seconds.
+            minimal_cacheing: Whether to minimize member caching for lower memory usage.
+            *args: Additional positional arguments forwarded to the parent implementation.
+            **kwargs: Additional keyword arguments forwarded to the underlying API.
+        """
         self.init_start_time = time.time()
         command_prefix = kwargs.pop("command_prefix", "!")
 
@@ -57,6 +74,11 @@ class Bot(commands.Bot):
         self.total_setup_time = None
 
     async def setup_hook(self):
+        """Load configured extensions, wire command error handling, and run smart sync.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         if self.log_path:
             try:
                 self.logger = LoggingManager(self.log_path)
@@ -93,6 +115,15 @@ class Bot(commands.Bot):
 
         async def on_tree_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError):
 
+            """Handle slash-command errors and convert framework exceptions to user responses.
+
+            Args:
+                interaction: Interaction context received from Discord.
+                error: Value for error.
+
+            Returns:
+                Any: Result produced by this function.
+            """
             if isinstance(error, app_commands.CommandInvokeError):
                 error = error.original
 
@@ -119,6 +150,11 @@ class Bot(commands.Bot):
         self.total_setup_time = time.time() - self.init_start_time
 
     async def signal_handler(self):
+        """Gracefully unload extensions and close the bot process.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         print("\nDopamine Framework: Bot shutdown requested...")
         extensions = list(self.extensions.keys())
         if self.default_diagnostics:
@@ -137,12 +173,22 @@ class Bot(commands.Bot):
         await self.close()
 
     async def restart_bot(self):
+        """Restart the running bot process after a graceful shutdown.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         print()
         print("Dopamine Framework: Restarting bot...")
         await self.signal_handler()
         os.execv(sys.executable, [sys.executable] + sys.argv)
 
     async def on_ready(self):
+        """Finalize startup presence and emit readiness diagnostics once connected.
+
+        Returns:
+            Any: Result produced by this function.
+        """
         start = time.time()
         if self.owner_id is None:
             app_info = await self.application_info()

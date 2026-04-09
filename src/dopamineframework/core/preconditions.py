@@ -4,7 +4,20 @@ from discord.ext import commands
 from .errors import MissingDopaminePermissions, RateLimited, PreconditionFailed
 
 def global_cooldown():
+    """Create a global slash-command cooldown check bound to the bot mapping.
+
+    Returns:
+        Any: Result produced by this function.
+    """
     async def predicate(interaction: discord.Interaction) -> bool:
+        """Allow invocation only when the user is not globally rate limited.
+
+        Args:
+            interaction: Interaction context received from Discord.
+
+        Returns:
+            bool: True when the check passes.
+        """
         bot = interaction.client
 
         if not hasattr(bot, 'global_cooldown_mapping'):
@@ -22,6 +35,14 @@ def global_cooldown():
 
 
 def permissions_preset(preset_name: str):
+    """Create a check that enforces one of the framework permission presets.
+
+    Args:
+        preset_name: Name of the built-in permission preset to enforce.
+
+    Returns:
+        Any: Result produced by this function.
+    """
     PRESETS = {
         "moderator": {"manage_messages": True, "kick_members": True, "ban_members": True},
         "admin": {"administrator": True},
@@ -35,6 +56,14 @@ def permissions_preset(preset_name: str):
     }
 
     async def predicate(interaction: discord.Interaction) -> bool:
+        """Validate guild or owner permissions for the selected preset.
+
+        Args:
+            interaction: Interaction context received from Discord.
+
+        Returns:
+            bool: True when the check passes.
+        """
         bot = interaction.client
 
         if preset_name.lower() == "bot_owner":
@@ -70,7 +99,23 @@ def permissions_preset(preset_name: str):
 
 def has_permissions(**perms):
 
+    """Create a check requiring all provided permission values to match.
+
+    Args:
+        **perms: Permission names mapped to required boolean values.
+
+    Returns:
+        bool: True when the check passes.
+    """
     async def predicate(interaction: discord.Interaction) -> bool:
+        """Validate that the member satisfies every requested permission flag.
+
+        Args:
+            interaction: Interaction context received from Discord.
+
+        Returns:
+            bool: True when the check passes.
+        """
         if not interaction.guild:
             raise PreconditionFailed("This command can only be used in a server.")
 
@@ -87,7 +132,23 @@ def has_permissions(**perms):
 
 def has_permissions_any(**perms):
 
+    """Create a check requiring at least one provided permission to match.
+
+    Args:
+        **perms: Permission names mapped to required boolean values.
+
+    Returns:
+        bool: True when the check passes.
+    """
     async def predicate(interaction: discord.Interaction) -> bool:
+        """Validate that the member satisfies at least one permission flag.
+
+        Args:
+            interaction: Interaction context received from Discord.
+
+        Returns:
+            bool: True when the check passes.
+        """
         if not interaction.guild:
             raise PreconditionFailed("This command can only be used in a server.")
 
@@ -106,9 +167,26 @@ def has_permissions_any(**perms):
     return app_commands.check(predicate)
 
 def cooldown(rate: int = 10, per: float = 60):
+    """Create a per-command user cooldown check.
+
+    Args:
+        rate: Maximum number of allowed uses in the time window.
+        per: Cooldown window size in seconds.
+
+    Returns:
+        Any: Result produced by this function.
+    """
     mapping = commands.CooldownMapping.from_cooldown(rate, per, commands.BucketType.user)
 
     async def predicate(interaction: discord.Interaction) -> bool:
+        """Allow invocation only when the local cooldown bucket permits it.
+
+        Args:
+            interaction: Interaction context received from Discord.
+
+        Returns:
+            bool: True when the check passes.
+        """
         bucket = mapping.get_bucket(interaction.message or interaction)
         retry_after = bucket.update_rate_limit()
 
