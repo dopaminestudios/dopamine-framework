@@ -23,7 +23,12 @@ def global_cooldown():
         if not hasattr(bot, 'global_cooldown_mapping'):
             return True
 
-        bucket = bot.global_cooldown_mapping.get_bucket(interaction.message or interaction)
+        class MockMessage:
+            def __init__(self, user):
+                self.author = user
+
+        bucket = bot.global_cooldown_mapping.get_bucket(MockMessage(interaction.user))
+
         retry_after = bucket.update_rate_limit()
 
         if retry_after:
@@ -187,7 +192,12 @@ def cooldown(rate: int = 10, per: float = 60):
         Returns:
             bool: True when the check passes.
         """
-        bucket = mapping.get_bucket(interaction.message or interaction)
+
+        class MockMessage:
+            def __init__(self, user):
+                self.author = user
+
+        bucket = mapping.get_bucket(MockMessage(interaction.user))
         retry_after = bucket.update_rate_limit()
 
         if retry_after:
