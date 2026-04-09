@@ -1,3 +1,24 @@
+## [v2.0.0](https://github.com/dopaminestudios/dopamine-framework/compare/vv1.6.0...vv2.0.0) (2026-04-09)
+### ⚠ BREAKING CHANGES
+
+* Dropped legacy support.
+* New preconditions feature!
+
+### Features & Minor Updates and Changes
+
+* Added documentation for preconditions. ([b665766](https://github.com/dopaminestudios/dopamine-framework/commit/b6657667b79ed0bd08d928759db17aa442c13338))
+* Dropped legacy support for importing with the name `dopamine_framework`. Now, only `dopamineframework` works. ([dcf30dc](https://github.com/dopaminestudios/dopamine-framework/commit/dcf30dc75639ba72dae8949425c844c17cb969bf))
+* Host Device Battery Status in diagnostics `/ping` embed is now completely hidden if there's no battery. ([d8e6e4d](https://github.com/dopaminestudios/dopamine-framework/commit/d8e6e4dfa1f84394e2c21704577a8a073f88fd9f))
+* New preconditions feature! ([ab5fd0f](https://github.com/dopaminestudios/dopamine-framework/commit/ab5fd0f50208c7a977af040dca7629a1e79999e3))
+
+### Documentation Changes
+
+* Added ability to choose whether to disable useless member caching. ([8dc7f23](https://github.com/dopaminestudios/dopamine-framework/commit/8dc7f2316e61a9f1eee781f6cf5253ea2ee1507a))
+* Added docstrings to all classes and functions. ([059d475](https://github.com/dopaminestudios/dopamine-framework/commit/059d47587036860b46fb055c9b1a6519935fe647))
+* Added documentation for dopamine_commands. ([be1bc43](https://github.com/dopaminestudios/dopamine-framework/commit/be1bc430107ad1f0a5096d81c3c8d9abca3abe40))
+* Updated documentation for bot.py. ([e8a7fe3](https://github.com/dopaminestudios/dopamine-framework/commit/e8a7fe3f92a3b0bb45d89aa381ae2cb9dce8716b))
+* Updated README ([42f0f40](https://github.com/dopaminestudios/dopamine-framework/commit/42f0f404720788dcabba3fb6f60eda790a266dca))
+
 ## [v1.6.0](https://github.com/dopaminestudios/dopamine-framework/compare/vv1.5.0...vv1.6.0) (2026-04-08)
 ### Features & Minor Updates and Changes
 
