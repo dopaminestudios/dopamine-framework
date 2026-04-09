@@ -297,11 +297,11 @@ class Diagnostics(commands.Cog):
             if battery:
                 percent = battery.percent
                 charging = battery.power_plugged
-                battery_status = f"Host Device Battery Status: `{percent}% ({'Charging' if charging else 'Discharging'})`"
+                battery_status = f"> Host Device Battery Status: `{percent}% {'(Charging)' if charging else ''}`"
             else:
-                battery_status = "Host Device Battery Status: `Device has no battery`"
+                battery_status = ""
         except Exception:
-            battery_status = "Host Device Battery Status: `Unable to determine`"
+            battery_status = "> Host Device Battery Status: `Unable to determine`"
 
         cpu_usage = self.current_cpu
         if cpu_usage == 0:
@@ -322,7 +322,7 @@ class Diagnostics(commands.Cog):
                 f"> Process Uptime: `{proc_uptime}`\n\n"
                 f"> CPU Usage: `{formatted_cpu_usage}%`\n"
                 f"> Memory Usage: `{memory_usage}`\n"
-                f"> {battery_status}"
+                f"{battery_status}"
             ),
             color=discord.Color(0x944ae8)
         )
