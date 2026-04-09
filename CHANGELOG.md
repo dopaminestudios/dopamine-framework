@@ -1,3 +1,8 @@
+## [v2.0.1](https://github.com/dopaminestudios/dopamine-framework/compare/vv2.0.0...vv2.0.1) (2026-04-09)
+### Bug Fixes
+
+* Hotfix: Fixed crash in dopamine_commands cooldown due a problem related to the "bucket". ([28e3309](https://github.com/dopaminestudios/dopamine-framework/commit/28e3309582082443ca755ebe0c637f5d3f8f483b))
+
 ## [v2.0.0](https://github.com/dopaminestudios/dopamine-framework/compare/vv1.6.0...vv2.0.0) (2026-04-09)
 ### ⚠ BREAKING CHANGES
 
