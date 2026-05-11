@@ -139,16 +139,19 @@ class Diagnostics(commands.Cog):
         draw = ImageDraw.Draw(img)
 
         try:
+            # Try loading your custom font
             title_font = ImageFont.truetype(BOLDFONT_PATH, 18 * scale_factor)
-            draw.text(
-                (50, 50),
-                "Average API Latency - Powered by Dopamine Framework",
-                fill=(255, 255, 255, 255),
-                font=title_font
-            )
         except Exception as e:
-            print(f"Font loading error: {e}")
-            draw.text((50, 50), "Average API Latency - Powered by Dopamine Framework", fill=(255, 255, 255, 255))
+            # Fallback to a default system font if Bold.ttf is missing
+            print(f"Dopamine Framework: Custom font not found at {BOLDFONT_PATH}. Using default.\n{e}")
+            title_font = ImageFont.load_default()
+
+        draw.text(
+            (50, 50),
+            "Average API Latency - Powered by Dopamine Framework",
+            fill=(255, 255, 255, 255),
+            font=title_font
+        )
 
         data = list(self.latency_cache)
         num_samples = len(data)
