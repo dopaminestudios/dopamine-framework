@@ -1,3 +1,8 @@
+## [v2.2.1](https://github.com/dopaminestudios/dopamine-framework/compare/vv2.2.0...vv2.2.1) (2026-05-11)
+### Bug Fixes
+
+* (Hotfix): Fixed crash caused by wrong usage of relative imports in internal cogs. ([9e16217](https://github.com/dopaminestudios/dopamine-framework/commit/9e16217db5fb3011a0760c22a6447ff0f966e0c1))
+
 ## [v2.2.0](https://github.com/dopaminestudios/dopamine-framework/compare/vv2.1.1...vv2.2.0) (2026-05-11)
 ### Features & Minor Updates and Changes
 
