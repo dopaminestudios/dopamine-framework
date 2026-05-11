@@ -113,6 +113,23 @@ class Diagnostics(commands.Cog):
         Returns:
             Any: Generated latency graph result.
         """
+
+        def get_secondary_colour(main_rgb, darken_factor=0.925, alpha=40):
+            """
+            Calculates a semi-transparent filler colour from a main line colour.
+
+            Args:
+                main_rgb (tuple): The (R, G, B) tuple of the main line.
+                darken_factor (float): How much to dim the colour (default 92.5%).
+                alpha (int): The transparency level (0-255).
+
+            Returns:
+                tuple: An (R, G, B, A) tuple for the filler.
+            """
+            secondary_rgb = tuple(max(0, min(255, int(channel * darken_factor))) for channel in main_rgb)
+
+            return secondary_rgb + (alpha,)
+
         scale_factor = 2
         width, height = 600 * scale_factor, 300 * scale_factor
         pad_top, pad_bot, pad_left, pad_right = 175, 80, 100, 40
@@ -182,11 +199,12 @@ class Diagnostics(commands.Cog):
         fill_points = [(pad_left, height - pad_bot)] + points + [(width - pad_right, height - pad_bot)]
         overlay = Image.new("RGBA", (width, height), (0, 0, 0, 0))
         overlay_draw = ImageDraw.Draw(overlay)
-        overlay_draw.polygon(fill_points, fill=(148, 74, 232, 40))
+        secondary_colour = get_secondary_colour(self.bot.accent_colour)
+        overlay_draw.polygon(fill_points, fill=secondary_colour)
         img = Image.alpha_composite(img, overlay)
 
         draw = ImageDraw.Draw(img)
-        draw.line(points, fill=(160, 80, 255), width=3 * scale_factor, joint="round")
+        draw.line(points, fill=self.bot.accent_colour, width=3 * scale_factor, joint="round")
 
         img = img.resize((600, 300), resample=Image.LANCZOS)
         buffer = io.BytesIO()
@@ -196,7 +214,7 @@ class Diagnostics(commands.Cog):
 
     @app_commands.command(name="ping", description="Get detailed latency and bot information")
 
-    async def info(self, interaction: discord.Interaction):
+    async def ping(self, interaction: discord.Interaction):
         """Send an embed with detailed latency, uptime, and system stats.
 
         Args:
@@ -247,7 +265,7 @@ class Diagnostics(commands.Cog):
         )
 
         if self.latency_cache:
-            avg_latency = round(sum(self.latency_cache) / len(self.latency_cache), 2)
+            avg_latency = round(sum(self.latency_cache) / len(self.latency_cache), 2) + "ms"
             sample_count = len(self.latency_cache)
         else:
             avg_latency = "Calculating..."
@@ -309,14 +327,14 @@ class Diagnostics(commands.Cog):
         else:
             formatted_cpu_usage = f"{cpu_usage:.1f}"
         embed = discord.Embed(
-            title="Latency Info",
+            title="Pong!",
             description=(
                 f"> Powered by Dopamine Framework `v{framework_version}`\n\n"
                 f"> Connected to Discord Gateway: `{gateway_node}`\n"
                 f"> Bot Host Location: `{location}`\n\n"
                 f"> API Latency: `{connection_latency}ms`\n"
                 f"> Round-trip Latency: `{round_latency}ms`\n"
-                f"> Heartbeat/WebSocket Latency: `{discord_latency}ms`\n\n"
+                f"> Heartbeat/WebSocket Latency: `{discord_latency}`\n\n"
                 f"> Average API Latency: `{avg_latency}ms` (over `{sample_count}` samples where each sample is average of 12 samples)\n\n"
                 f"> Connection Uptime: `{uptime_formatted}`\n"
                 f"> Process Uptime: `{proc_uptime}`\n\n"
@@ -324,7 +342,7 @@ class Diagnostics(commands.Cog):
                 f"> Memory Usage: `{memory_usage}`\n"
                 f"{battery_status}"
             ),
-            color=discord.Color(0x944ae8)
+            color=discord.Colour.from_rgb(self.bot.accent_colour)
         )
         message = await interaction.original_response()
         await message.edit(content=None, embed=embed)

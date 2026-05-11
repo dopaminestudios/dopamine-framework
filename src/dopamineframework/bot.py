@@ -21,7 +21,7 @@ class Bot(commands.Bot):
 
     """
     def __init__(self, cogs_path: str = "cogs", log_path: str = None, default_diagnostics: bool = True, status: discord.Status = None, activity: discord.Activity = None, global_cooldown_rate: int = 10,
-        global_cooldown_per: float = 60.0, minimal_cacheing: bool = False, *args, **kwargs):
+        global_cooldown_per: float = 60.0, minimal_cacheing: bool = False, accent_colour: discord.Colour = discord.Colour(0x944ae8), *args, **kwargs):
         """Initialize the bot with framework defaults, cooldowns, and extension settings.
 
         Args:
@@ -33,6 +33,7 @@ class Bot(commands.Bot):
             global_cooldown_rate: Default global cooldown rate limit for slash commands.
             global_cooldown_per: Default global cooldown window in seconds.
             minimal_cacheing: Whether to minimize member caching for lower memory usage.
+            accent_colour: The colour to be used for accents (and more) in the `/ping` embed, and the `/latency info` graph.
             *args: Additional positional arguments forwarded to the parent implementation.
             **kwargs: Additional keyword arguments forwarded to the underlying API.
         """
@@ -67,6 +68,7 @@ class Bot(commands.Bot):
             commands.BucketType.user
         )
         self.minimal_cacheing = minimal_cacheing
+        self.accent_colour = accent_colour.to_rgb()
         self.registry = CommandRegistry(self)
         self.logger = None
         self.start_time = None
