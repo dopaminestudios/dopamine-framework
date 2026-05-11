@@ -343,7 +343,7 @@ class Diagnostics(commands.Cog):
                 f"> Memory Usage: `{memory_usage}`\n"
                 f"{battery_status}"
             ),
-            color=discord.Colour.from_rgb(self.bot.accent_colour)
+            color=discord.Colour.from_rgb(*self.bot.accent_colour)
         )
         message = await interaction.original_response()
         await message.edit(content=None, embed=embed)
