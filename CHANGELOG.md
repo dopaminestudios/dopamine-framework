@@ -1,3 +1,19 @@
+## [v2.2.0](https://github.com/dopaminestudios/dopamine-framework/compare/vv2.1.1...vv2.2.0) (2026-05-11)
+### Features & Minor Updates and Changes
+
+* Added ability to customise the accent colour of latency graph and ping embed. ([3275827](https://github.com/dopaminestudios/dopamine-framework/commit/32758272db0daa7538f7c4b4e7a0c485f56e946b))
+* Updated all internal commands (`/ping`, `/latency graph`, and `/od`) to use Dopamine Commands. ([37e5111](https://github.com/dopaminestudios/dopamine-framework/commit/37e5111ba6db5262bc5e6a9787a220fa5409a4d1))
+
+### Bug Fixes
+
+* Added missing separator between page number display and navigation buttons. ([085ef59](https://github.com/dopaminestudios/dopamine-framework/commit/085ef591916ec4b826533d96e109817a69eac0b7))
+
+### Documentation Changes
+
+* Updated description for PyPi package. ([bef9a6b](https://github.com/dopaminestudios/dopamine-framework/commit/bef9a6b9bde4d1629be38293b94282e8071bcb2f))
+* Updated Documentation. ([29b5fce](https://github.com/dopaminestudios/dopamine-framework/commit/29b5fce7df5f0633eb08339b0a4eb71f4a617d96))
+* Updated README. ([7c789a5](https://github.com/dopaminestudios/dopamine-framework/commit/7c789a5192f652a4f41b6d49a0f586bcea58094e))
+
 ## [v2.1.1](https://github.com/dopaminestudios/dopamine-framework/compare/vv2.1.0...vv2.1.1) (2026-04-09)
 ### Bug Fixes
 
