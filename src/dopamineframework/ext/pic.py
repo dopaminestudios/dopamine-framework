@@ -2,7 +2,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from ..core.dashboard import OwnerDashboard
-from ...dopamineframework import dopamine_commands
+from ..core import dopamine_commands
 
 class Pic(commands.Cog):
     """Owner-only utility cog that exposes dashboard-related commands.

@@ -9,7 +9,7 @@ import io
 from PIL import Image, ImageDraw, ImageFont
 from collections import deque
 from .path import framework_version, BOLDFONT_PATH
-from ...dopamineframework import dopamine_commands
+from ..core import dopamine_commands
 import geocoder
 
 
