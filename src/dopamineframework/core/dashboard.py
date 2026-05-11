@@ -120,7 +120,7 @@ class OwnerDashboard(PrivateLayoutView):
                                           disabled=(self.page >= total_pages))
             right_btn.callback = self.next_page
             nav_row.add_item(right_btn)
-
+            container.add_item(discord.ui.Separator())
             container.add_item(nav_row)
 
         container.add_item(discord.ui.Separator())
