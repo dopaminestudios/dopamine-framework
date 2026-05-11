@@ -1,3 +1,14 @@
+## [v2.2.2](https://github.com/dopaminestudios/dopamine-framework/compare/vv2.2.1...vv2.2.2) (2026-05-11)
+### Bug Fixes
+
+* (Hotfix): Fixed crash caused by from_rgb expecting individual r, g, b values but getting tuple instead. ([728102c](https://github.com/dopaminestudios/dopamine-framework/commit/728102c13e1390f8e844deada0d1e169e0eb141c))
+* Bot class now allows editing the self.logger directly. ([082e0fc](https://github.com/dopaminestudios/dopamine-framework/commit/082e0fc450ed0e798ac45b580b4a90e750b67d7a))
+* Fixed font loading error. ([a4ea547](https://github.com/dopaminestudios/dopamine-framework/commit/a4ea547d21869778ad6734c2e2c5a67a1f2e2a90))
+
+### Documentation Changes
+
+* Updated Documentation. ([d235048](https://github.com/dopaminestudios/dopamine-framework/commit/d2350483ca8f7fcf63c4fb63fd2811065dbb2be4))
+
 ## [v2.2.1](https://github.com/dopaminestudios/dopamine-framework/compare/vv2.2.0...vv2.2.1) (2026-05-11)
 ### Bug Fixes
 
